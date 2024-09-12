@@ -1,1 +1,1 @@
-/usr/bin/c++ -g CMakeFiles/Projet_Poisson.dir/main.cpp.o -o Projet_Poisson 
+/usr/bin/c++ -g CMakeFiles/Projet_Poisson.dir/main.cpp.o -o Projet_Poisson  /usr/lib/x86_64-linux-gnu/libSDL2.so 

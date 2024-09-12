@@ -92,6 +92,7 @@ Projet_Poisson_EXTERNAL_OBJECTS =
 
 Projet_Poisson: CMakeFiles/Projet_Poisson.dir/main.cpp.o
 Projet_Poisson: CMakeFiles/Projet_Poisson.dir/build.make
+Projet_Poisson: /usr/lib/x86_64-linux-gnu/libSDL2.so
 Projet_Poisson: CMakeFiles/Projet_Poisson.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Projet_Poisson"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Projet_Poisson.dir/link.txt --verbose=$(VERBOSE)

@@ -238,6 +238,9 @@ Projet_Poisson_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Projet_Poisson_SOURCE_DIR:STATIC=/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson
 
+//The directory containing a CMake configuration file for SDL2.
+SDL2_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/SDL2
+
 
 ########################
 # INTERNAL cache entries
