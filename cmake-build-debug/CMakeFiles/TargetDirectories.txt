@@ -1,3 +1,0 @@
-/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/cmake-build-debug/CMakeFiles/Projet_Poisson.dir
-/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/cmake-build-debug/CMakeFiles/rebuild_cache.dir
