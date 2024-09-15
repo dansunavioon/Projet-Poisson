@@ -1,38 +1,20 @@
-#include <SDL.h>
-#include <iostream>
+
+
+// Including custom class
+
+#include "Fenetre/Fenetre.h"
 
 int main(int argc, char* argv[]) {
 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "[DEBUG] > %s", SDL_GetError());
-        return EXIT_FAILURE;
-    }
-    SDL_Window* pWindow{ nullptr };
-    SDL_Renderer* pRenderer{ nullptr };
-    if (SDL_CreateWindowAndRenderer(800, 600, SDL_WINDOW_SHOWN, &pWindow, &pRenderer) < 0)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "[DEBUG] > %s", SDL_GetError());
-        SDL_Quit();
-        return EXIT_FAILURE;
-    }
-    SDL_Event events;
-    bool isOpen{ true };
-    while (isOpen)
-    {
-        while (SDL_PollEvent(&events))
-        {
-            switch (events.type)
-            {
-                case SDL_QUIT:
-                    isOpen = false;
-                break;
-            }
-        }
-    }
-    SDL_DestroyRenderer(pRenderer);SDL_DestroyWindow(pWindow);
-    SDL_Quit();
-    return EXIT_SUCCESS;
+    SDL_Window* window = nullptr;
+    SDL_Renderer* renderer = nullptr;
 
+    // Créer et afficher une fenêtre
+
+    Fenetre* fenetre = new Fenetre(window, renderer, 600, 800);
+
+    fenetre->display();
+
+    return 0;
 }
 

@@ -6,7 +6,11 @@ find_package(SDL2 REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Projet_Poisson main.cpp)
+add_executable(Projet_Poisson main.cpp
+        poisson/poisson.cpp
+        poisson/poisson.h
+        fenetre/fenetre.cpp
+        fenetre/fenetre.h)
 
 # Inclure les fichiers d'en-tête SDL2
 target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})
