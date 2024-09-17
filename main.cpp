@@ -1,20 +1,7 @@
+#include "Poisson/Poisson.h"
 
-
-// Including custom class
-
-#include "Fenetre/Fenetre.h"
-
-int main(int argc, char* argv[]) {
-
-    SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
-
-    // Créer et afficher une fenêtre
-
-    Fenetre* fenetre = new Fenetre(window, renderer, 600, 800);
-
-    fenetre->display();
-
+int main() {
+    Simulation simulation(100);  // Simulation avec 100 poissons
+    simulation.run(1000);        // Exécuter la simulation pour 1000 étapes
     return 0;
 }
-
