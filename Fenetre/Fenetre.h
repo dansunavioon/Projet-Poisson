@@ -3,8 +3,6 @@
 
 #include <SDL.h>
 
-#include <SDL_images.h>
-
 class Fenetre {
 
     SDL_Window* window;
