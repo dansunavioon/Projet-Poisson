@@ -30,7 +30,7 @@ void Poisson::update(const std::vector<Poisson>& poissons) { /*...*/ }
 
 // Dessiner le poisson à l'écran
 void Poisson::draw(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);  // Vert pour les poissons
+    SDL_SetRenderDrawColor(renderer, 255, 128, 0, 255);  // Orange pour les poissons
     SDL_Rect rect = {(int)x, (int)y, 5, 5};            // Un rectangle pour chaque poisson
     SDL_RenderFillRect(renderer, &rect);
 }
