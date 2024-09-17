@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 
     // Créer et afficher une fenêtre
 
-    Fenetre* fenetre = new Fenetre(window, renderer, 600, 800);
+    Fenetre* fenetre = new Fenetre(window, renderer, 600, 1000);
 
     fenetre->display();
 

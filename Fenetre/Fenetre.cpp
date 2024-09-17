@@ -1,13 +1,5 @@
 #include "Fenetre.h"
 
-
-/**
- * Constructeur
- * @param window
- * @param renderer
- * @param height
- * @param width
- */
 Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, const int width)
 {
  this->window = window;
@@ -32,11 +24,13 @@ int Fenetre::display()
 
 
 // Test dessin carré
- SDL_Rect rect = {10, 20, 100, 100};
+ /*SDL_Rect rect = {10, 20, 10, 20};
  SDL_Color color = {255, 0, 0, 255};
 
  SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
- SDL_RenderDrawRect(renderer, &rect);
+ SDL_RenderDrawRect(renderer, &rect);*/
+
+
 
  SDL_RenderPresent(this->renderer);
 
