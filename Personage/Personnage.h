@@ -1,30 +1,43 @@
 #ifndef PROJET_POISSON_PERSONNAGE_H
 #define PROJET_POISSON_PERSONNAGE_H
 
+#include <SDL.h>
+#include <iostream>
+#include "var_personnage.h"
+
+enum Direction {
+    DROITE,
+    GAUCHE,
+    HAUT,
+    BAS
+};
 
 class Personnage {
-private:
-    // coordonnées
-    int x, y;
+    private:
+        SDL_Texture* spriteDroite;  // Feuille de sprites pour aller à droite
+        SDL_Texture* spriteGauche;  // Feuille de sprites pour aller à gauche
+        SDL_Texture* spriteHaut;    // Feuille de sprites pour aller en haut
+        SDL_Texture* spriteBas;     // Feuille de sprites pour aller en bas
+        SDL_Renderer* renderer;
 
-    // vitesse de deplacement
-    int vitesse;
+        int x, y;                 // Position du personnage
+        int currentFrame;         // Frame actuelle de l'animation
+        Direction currentDirection;  // Direction actuelle
 
-    // frame courante
-    int frame;
-
-    // status d'animations
-    int status;
+        void setClips();          // Initialiser les clips de sprites
 
 public:
-    Personnage();
-    void handle_events();
+    Personnage(SDL_Renderer* renderer);
+    ~Personnage();
 
-    // montrer le plongeur
-    void affichage();
+    // Gérer les mouvements
+    void handleInput();
 
-    // Découpe les 4 sprites
-    void set_clip();
+    // Mettre à jour le personnage
+    void update();
+
+    // Afficher le personnage
+    void render();
 };
 
 
