@@ -15,7 +15,8 @@ add_executable(Projet_Poisson main.cpp
         Personage/Personnage.h
         Personage/Personnage.h
         Personage/var_personnage.h
-        Personage/var_personnage.h)
+        Personage/var_personnage.h
+        Personage/var_personnage.cpp)
 
 # Inclure les fichiers d'en-tête SDL2
 target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})

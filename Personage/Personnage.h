@@ -31,7 +31,7 @@ public:
     ~Personnage();
 
     // Gérer les mouvements
-    void handleInput();
+    void handleInput(SDL_Event& monevent);
 
     // Mettre à jour le personnage
     void update();

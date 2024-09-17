@@ -17,18 +17,16 @@ const int SHEET_HEIGHT_BATON = 794;
 
 const int TAILLE_PLONGEUR = 198;
 
-// Les surfaces
-SDL_Surface *faces = NULL;
-SDL_Surface *screen = NULL;
+
 
 // La structure d'événements
-SDL_Event event;
+extern SDL_Event event;
 
 // Les différentes parties de la feuille de sprites qui vont être blittés
-SDL_Rect clipsDroite[ 4 ];
-SDL_Rect clipsGauche[ 4 ];
-SDL_Rect clipsHaut[ 4 ];
-SDL_Rect clipsBas[ 4 ];
+extern SDL_Rect clipsDroite[ 4 ];
+extern SDL_Rect clipsGauche[ 4 ];
+extern SDL_Rect clipsHaut[ 4 ];
+extern SDL_Rect clipsBas[ 4 ];
 
 
 #endif //PROJET_POISSON_VAR_PERSONNAGE_H
