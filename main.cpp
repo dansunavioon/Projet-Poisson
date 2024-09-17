@@ -2,19 +2,19 @@
 
 // Including custom class
 
-#include "Fenetre/Fenetre.h"
+    #include "Fenetre/Fenetre.h"
 
-int main(int argc, char* argv[]) {
+    int main(int argc, char* argv[]) {
 
-    SDL_Window* window = nullptr;
-    SDL_Renderer* renderer = nullptr;
+        SDL_Window* window = nullptr;
+        SDL_Renderer* renderer = nullptr;
 
-    // Créer et afficher une fenêtre
+        // Créer et afficher une fenêtre
 
-    Fenetre* fenetre = new Fenetre(window, renderer, 600, 800);
+        Fenetre* fenetre = new Fenetre(window, renderer, 600, 800);
 
-    fenetre->display();
+        fenetre->display();
 
-    return 0;
-}
+        return 0;
+    }
 

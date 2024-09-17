@@ -10,7 +10,12 @@ add_executable(Projet_Poisson main.cpp
         poisson/poisson.cpp
         poisson/poisson.h
         fenetre/fenetre.cpp
-        fenetre/fenetre.h)
+        fenetre/fenetre.h
+        Personage/Personnage.cpp
+        Personage/Personnage.h
+        Personage/Personnage.h
+        Personage/var_personnage.h
+        Personage/var_personnage.h)
 
 # Inclure les fichiers d'en-tête SDL2
 target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})
