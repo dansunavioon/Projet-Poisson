@@ -57,7 +57,7 @@ while (isOpen) {
     }
 
     // Mettre à jour l'état du personnage (animation, position, etc.)
-    // NB :  Penser à faire en sorte que la boucle de calcul ait un petit wait (à limiter, essayer de le faire pour que chaque frame de calcul dure le même temps)
+    // NB : Penser à faire en sorte que la boucle de calcul ait un petit wait (à limiter, essayer de le faire pour que chaque frame de calcul dure le même temps)
     // NB : pour les animations : là ça doit être obligatoire de limiter les updates mais bien distinguer du calcul (vitesse des animations potentiellement très différentes des calculs)
     plongeur.update();
 

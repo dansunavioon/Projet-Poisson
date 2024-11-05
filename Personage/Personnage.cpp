@@ -59,7 +59,7 @@ void Personnage::setClips() {
     for (int i = 0; i < 4; i++) {
         clipsHaut[i].x = 0;
         clipsHaut[i].y = i * TAILLE_PLONGEUR;
-        clipsHaut[i].w = TAILLE_PLONGEUR;
+        clipsHaut[i].w = SHEET_WIDTH_BATON;
         clipsHaut[i].h = TAILLE_PLONGEUR;
     }
 
@@ -67,7 +67,7 @@ void Personnage::setClips() {
     for (int i = 0; i < 4; i++) {
         clipsBas[i].x = 0;
         clipsBas[i].y = i * TAILLE_PLONGEUR;
-        clipsBas[i].w = TAILLE_PLONGEUR;
+        clipsBas[i].w = SHEET_WIDTH_BATON;
         clipsBas[i].h = TAILLE_PLONGEUR;
     }
 }
@@ -105,27 +105,37 @@ void Personnage::update() {
 void Personnage::render() {
     SDL_Rect* currentClip = nullptr;
     SDL_Texture* currentSprite = nullptr;
+    int WIDTH_QUAD = 198;
+    int HEIGHT_QUAD = 69;
 
     switch (currentDirection) {
         case HAUT:
             currentClip = &clipsHaut[currentFrame];
             currentSprite = spriteHaut;
+            WIDTH_QUAD = 69;
+            HEIGHT_QUAD = 198;
             break;
         case BAS:
             currentClip = &clipsBas[currentFrame];
             currentSprite = spriteBas;
+            WIDTH_QUAD = 69;
+            HEIGHT_QUAD = 198;
             break;
         case GAUCHE:
             currentClip = &clipsGauche[currentFrame];
             currentSprite = spriteGauche;
+            WIDTH_QUAD = 198;
+            HEIGHT_QUAD = 69;
             break;
         case DROITE:
             currentClip = &clipsDroite[currentFrame];
             currentSprite = spriteDroite;
+            WIDTH_QUAD = 198;
+            HEIGHT_QUAD = 69;
             break;
     }
 
-    SDL_Rect renderQuad = {x, y, TAILLE_PLONGEUR, SHEET_HEIGHT_BANDE};
+    SDL_Rect renderQuad = {x, y, WIDTH_QUAD, HEIGHT_QUAD};
     SDL_RenderCopy(renderer, currentSprite, currentClip, &renderQuad);
     /*
     std::cout << "renderQuad: x=" << renderQuad.x << " y=" << renderQuad.y

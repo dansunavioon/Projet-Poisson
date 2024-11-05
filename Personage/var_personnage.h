@@ -8,15 +8,11 @@
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
-// Les attributs de la feuille de sprites
-const int SHEET_WIDTH_BANDE = 794;
+// Les attributs de la feuille de sprites (794 x 69)
 const int SHEET_HEIGHT_BANDE = 69;
-
 const int SHEET_WIDTH_BATON = 69;
-const int SHEET_HEIGHT_BATON = 794;
 
 const int TAILLE_PLONGEUR = 198;
-
 
 
 // La structure d'événements
