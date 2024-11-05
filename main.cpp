@@ -2,7 +2,7 @@
 
 // Including custom class
 
-#include "Fenetre/Fenetre.h"
+#include "Map/Map.h"
 
 int main(int argc, char* argv[]) {
 
@@ -11,9 +11,9 @@ int main(int argc, char* argv[]) {
 
     // Créer et afficher une fenêtre
 
-    Fenetre* fenetre = new Fenetre(window, renderer, 600, 1000);
+    Map* map = new Map(window, renderer, MAP_HEIGHT, MAP_WIDTH);
 
-    fenetre->display();
+    map->display();
 
     return 0;
 }
