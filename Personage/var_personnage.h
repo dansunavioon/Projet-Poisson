@@ -14,6 +14,10 @@ const int SHEET_WIDTH_BATON = 69;
 
 const int TAILLE_PLONGEUR = 198;
 
+extern SDL_Rect camera; // Camera
+const int MAP_WIDTH = 3000;  // Largeur de la carte
+const int MAP_HEIGHT = 2000; // Hauteur de la carte
+
 
 // La structure d'événements
 extern SDL_Event event;

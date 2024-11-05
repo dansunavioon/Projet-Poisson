@@ -1,6 +1,10 @@
 #include "Personnage.h"
 
 Personnage::Personnage(SDL_Renderer* renderer) : renderer(renderer), x(100), y(100), currentFrame(0), currentDirection(DROITE) {
+    // Calculer la position initiale du plongeur au centre de la carte
+    x = (MAP_WIDTH / 2) - (TAILLE_PLONGEUR / 2); // Centrer horizontalement
+    y = (MAP_HEIGHT / 2) - (TAILLE_PLONGEUR / 2); // Centrer verticalement
+
     // Charger les 4 images de sprites
     SDL_Surface* tempSurface = SDL_LoadBMP("image_perso/Nageur_Droite.bmp");
     if (!tempSurface) {
@@ -81,7 +85,7 @@ void Personnage::handleInput(SDL_Event& monevent) {
                     currentDirection = HAUT;
                     break;
                 case SDLK_DOWN:
-                    if (y < SCREEN_HEIGHT - TAILLE_PLONGEUR) y += TAILLE_PLONGEUR / 2;
+                    if (y < MAP_HEIGHT - TAILLE_PLONGEUR) y += TAILLE_PLONGEUR / 2;
                     currentDirection = BAS;
                     break;
                 case SDLK_LEFT:
@@ -89,7 +93,7 @@ void Personnage::handleInput(SDL_Event& monevent) {
                     currentDirection = GAUCHE;
                     break;
                 case SDLK_RIGHT:
-                    if (x < SCREEN_WIDTH - TAILLE_PLONGEUR) x += TAILLE_PLONGEUR / 2;
+                    if (x < MAP_WIDTH - TAILLE_PLONGEUR) x += TAILLE_PLONGEUR / 2;
                     currentDirection = DROITE;
                     break;
             }
@@ -135,7 +139,7 @@ void Personnage::render() {
             break;
     }
 
-    SDL_Rect renderQuad = {x, y, WIDTH_QUAD, HEIGHT_QUAD};
+    SDL_Rect renderQuad = {x - camera.x, y - camera.y, WIDTH_QUAD, HEIGHT_QUAD};
     SDL_RenderCopy(renderer, currentSprite, currentClip, &renderQuad);
     /*
     std::cout << "renderQuad: x=" << renderQuad.x << " y=" << renderQuad.y

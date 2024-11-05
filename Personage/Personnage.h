@@ -38,6 +38,10 @@ public:
 
     // Afficher le personnage
     void render();
+
+    // Accéder à la position pour la caméra
+    int getX() const { return x; }
+    int getY() const { return y; }
 };
 
 
