@@ -1,23 +1,42 @@
 #include <SDL2/SDL.h>
+#include <iostream>
 #include <vector>
 #include "Poisson/Poisson.h"
 
-const int WINDOW_WIDTH = 800;
-const int WINDOW_HEIGHT = 600;
-const int NUM_POISSONS = 100;
-
 int main(int argc, char* argv[]) {
-    SDL_Init(SDL_INIT_VIDEO);
-    SDL_Window* window = SDL_CreateWindow("Simulation de Poissons", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-    std::vector<Poisson> poissons;
-    for (int i = 0; i < NUM_POISSONS; ++i) {
-        poissons.emplace_back(rand() % WINDOW_WIDTH, rand() % WINDOW_HEIGHT);
+    // Initialisation de SDL
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        std::cerr << "Erreur d'initialisation de SDL : " << SDL_GetError() << std::endl;
+        return -1;
     }
 
+    // Création de la fenêtre
+    SDL_Window* window = SDL_CreateWindow("Simulation de Poissons", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!window) {
+        std::cerr << "Erreur de création de la fenêtre : " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        return -1;
+    }
+
+    // Création du renderer
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        std::cerr << "Erreur de création du renderer : " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
+
+    // Création des poissons
+    std::vector<Poisson> poissons;
+    for (int i = 0; i < 100; ++i) {
+        poissons.emplace_back(rand() % 800, rand() % 600);
+    }
+
+    // Boucle principale
     bool running = true;
     SDL_Event event;
+
     while (running) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
@@ -25,16 +44,21 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        // Update and draw
+        // Mise à jour des poissons
         for (auto& poisson : poissons) {
             poisson.update(poissons);
         }
 
+        // Efface l'écran
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
+
+        // Dessine les poissons
         for (const auto& poisson : poissons) {
             poisson.draw(renderer);
         }
+
+        // Présente le rendu
         SDL_RenderPresent(renderer);
     }
 

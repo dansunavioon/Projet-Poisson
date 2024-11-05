@@ -8,7 +8,7 @@ class Poisson {
 public:
     Poisson(float x, float y);
     void update(const std::vector<Poisson>& poissons);
-    void draw(SDL_Renderer* renderer) const;  // Ajout de 'const' ici
+    void draw(SDL_Renderer* renderer) const;
 
 private:
     SDL_Point position;
@@ -16,8 +16,8 @@ private:
 
     void applyBehaviors(const std::vector<Poisson>& poissons);
     SDL_Point align(const std::vector<Poisson>& poissons);
-    SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);  // Renommé
-    SDL_Point separationBehavior(const std::vector<Poisson>& poissons);  // Renommé
+    SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
+    SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
 };
 
 #endif // POISSON_H
