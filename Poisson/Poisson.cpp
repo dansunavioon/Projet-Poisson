@@ -22,8 +22,16 @@ void Poisson::update(const std::vector<Poisson>& poissons) {
 }
 
 void Poisson::draw(SDL_Renderer* renderer) const {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderDrawPoint(renderer, position.x, position.y);
+    // Dessine un triangle représentant un poisson
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Couleur bleu pour le poisson
+
+    SDL_Point points[4];
+    points[0] = {position.x, position.y}; // Point avant
+    points[1] = {position.x - 10, position.y + 5}; // Point inférieur gauche
+    points[2] = {position.x - 10, position.y - 5}; // Point supérieur gauche
+    points[3] = {position.x, position.y}; // Fermer le triangle
+
+    SDL_RenderDrawLines(renderer, points, 4);
 }
 
 void Poisson::applyBehaviors(const std::vector<Poisson>& poissons) {
