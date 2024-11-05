@@ -4,16 +4,19 @@
 #include <cstdlib> // Pour rand() et RAND_MAX
 #include "Poisson/Poisson.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
     // Initialisation de SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
         std::cerr << "Erreur d'initialisation de SDL : " << SDL_GetError() << std::endl;
         return -1;
     }
 
     // Création de la fenêtre
     SDL_Window* window = SDL_CreateWindow("Simulation de Poissons", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-    if (!window) {
+    if (!window)
+    {
         std::cerr << "Erreur de création de la fenêtre : " << SDL_GetError() << std::endl;
         SDL_Quit();
         return -1;
@@ -21,16 +24,19 @@ int main(int argc, char* argv[]) {
 
     // Création du renderer
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
+    if (!renderer)
+    {
         std::cerr << "Erreur de création du renderer : " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
         SDL_Quit();
         return -1;
     }
 
-    // Création des poissons
+    // Création des poissons avec des positions de départ aléatoires
     std::vector<Poisson> poissons;
-    for (int i = 0; i < 600; ++i) { // Modifié pour créer 600 poissons
+    int nombrePoissons = 600; // Nombre de poissons
+    for (int i = 0; i < nombrePoissons; ++i)
+    {
         float randomX = static_cast<float>(rand() % 800); // Position X aléatoire
         float randomY = static_cast<float>(rand() % 600); // Position Y aléatoire
         poissons.emplace_back(randomX, randomY);
@@ -40,15 +46,20 @@ int main(int argc, char* argv[]) {
     bool running = true;
     SDL_Event event;
 
-    while (running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+    while (running)
+    {
+        // Gestion des événements
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
                 running = false;
             }
         }
 
         // Mise à jour des poissons
-        for (auto& poisson : poissons) {
+        for (auto& poisson : poissons)
+        {
             poisson.update(poissons);
         }
 
@@ -57,7 +68,8 @@ int main(int argc, char* argv[]) {
         SDL_RenderClear(renderer);
 
         // Dessine les poissons
-        for (const auto& poisson : poissons) {
+        for (const auto& poisson : poissons)
+        {
             poisson.draw(renderer);
         }
 

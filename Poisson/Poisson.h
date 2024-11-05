@@ -4,7 +4,8 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
-class Poisson {
+class Poisson
+{
 public:
     Poisson(float x, float y);
     void update(const std::vector<Poisson>& poissons);

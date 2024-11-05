@@ -2,14 +2,16 @@
 #include <cmath>
 #include <algorithm>
 
-Poisson::Poisson(float x, float y) {
+Poisson::Poisson(float x, float y)
+{
     position.x = static_cast<int>(x);
     position.y = static_cast<int>(y);
     velocity.x = (rand() % 3 - 1); // Vitesse initiale aléatoire
     velocity.y = (rand() % 3 - 1); // Vitesse initiale aléatoire
 }
 
-void Poisson::update(const std::vector<Poisson>& poissons) {
+void Poisson::update(const std::vector<Poisson>& poissons)
+{
     applyBehaviors(poissons);
     position.x += velocity.x;
     position.y += velocity.y;
@@ -21,7 +23,8 @@ void Poisson::update(const std::vector<Poisson>& poissons) {
     else if (position.y < 0) position.y = 600;
 }
 
-void Poisson::draw(SDL_Renderer* renderer) const {
+void Poisson::draw(SDL_Renderer* renderer) const
+{
     // Dessine un triangle représentant un poisson
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Couleur rouge pour le poisson
 
@@ -35,7 +38,8 @@ void Poisson::draw(SDL_Renderer* renderer) const {
     SDL_RenderDrawLines(renderer, points, 4); // Dessiner le poisson
 }
 
-void Poisson::applyBehaviors(const std::vector<Poisson>& poissons) {
+void Poisson::applyBehaviors(const std::vector<Poisson>& poissons)
+{
     SDL_Point alignment = align(poissons);
     SDL_Point cohesion = cohesionBehavior(poissons);
     SDL_Point separation = separationBehavior(poissons);
@@ -47,34 +51,40 @@ void Poisson::applyBehaviors(const std::vector<Poisson>& poissons) {
     // Limiter la vitesse
     float speedLimit = 4.0f;
     float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
-    if (speed > speedLimit) {
+    if (speed > speedLimit)
+    {
         velocity.x = (velocity.x / speed) * speedLimit;
         velocity.y = (velocity.y / speed) * speedLimit;
     }
 }
 
-SDL_Point Poisson::align(const std::vector<Poisson>& poissons) {
+SDL_Point Poisson::align(const std::vector<Poisson>& poissons)
+{
     SDL_Point steering = {0, 0};
     int total = 0;
     float perceptionRadius = 50.0f;
 
-    for (const auto& other : poissons) {
+    for (const auto& other : poissons)
+    {
         float distance = std::sqrt(std::pow(position.x - other.position.x, 2) + std::pow(position.y - other.position.y, 2));
-        if (&other != this && distance < perceptionRadius) {
+        if (&other != this && distance < perceptionRadius)
+        {
             steering.x += other.velocity.x;
             steering.y += other.velocity.y;
             total++;
         }
     }
 
-    if (total > 0) {
+    if (total > 0)
+    {
         steering.x /= total;
         steering.y /= total;
 
         // Limiter la vitesse
         float speedLimit = 4.0f;
         float speed = std::sqrt(steering.x * steering.x + steering.y * steering.y);
-        if (speed > speedLimit) {
+        if (speed > speedLimit)
+        {
             steering.x = (steering.x / speed) * speedLimit;
             steering.y = (steering.y / speed) * speedLimit;
         }
@@ -83,21 +93,25 @@ SDL_Point Poisson::align(const std::vector<Poisson>& poissons) {
     return steering;
 }
 
-SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons) {
+SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons)
+{
     SDL_Point steering = {0, 0};
     int total = 0;
     float perceptionRadius = 50.0f;
 
-    for (const auto& other : poissons) {
+    for (const auto& other : poissons)
+    {
         float distance = std::sqrt(std::pow(position.x - other.position.x, 2) + std::pow(position.y - other.position.y, 2));
-        if (&other != this && distance < perceptionRadius) {
+        if (&other != this && distance < perceptionRadius)
+        {
             steering.x += other.position.x;
             steering.y += other.position.y;
             total++;
         }
     }
 
-    if (total > 0) {
+    if (total > 0)
+    {
         steering.x /= total;
         steering.y /= total;
 
@@ -106,7 +120,8 @@ SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons) {
 
         float speedLimit = 4.0f;
         float speed = std::sqrt(steering.x * steering.x + steering.y * steering.y);
-        if (speed > speedLimit) {
+        if (speed > speedLimit)
+        {
             steering.x = (steering.x / speed) * speedLimit;
             steering.y = (steering.y / speed) * speedLimit;
         }
@@ -115,14 +130,17 @@ SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons) {
     return steering;
 }
 
-SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons) {
+SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons)
+{
     SDL_Point steering = {0, 0};
     int total = 0;
     float perceptionRadius = 25.0f;
 
-    for (const auto& other : poissons) {
+    for (const auto& other : poissons)
+    {
         float distance = std::sqrt(std::pow(position.x - other.position.x, 2) + std::pow(position.y - other.position.y, 2));
-        if (&other != this && distance < perceptionRadius) {
+        if (&other != this && distance < perceptionRadius)
+        {
             float diff_x = position.x - other.position.x;
             float diff_y = position.y - other.position.y;
             steering.x += diff_x / distance;
@@ -131,13 +149,15 @@ SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons) {
         }
     }
 
-    if (total > 0) {
+    if (total > 0)
+    {
         steering.x /= total;
         steering.y /= total;
 
         float speedLimit = 4.0f;
         float speed = std::sqrt(steering.x * steering.x + steering.y * steering.y);
-        if (speed > speedLimit) {
+        if (speed > speedLimit)
+        {
             steering.x = (steering.x / speed) * speedLimit;
             steering.y = (steering.y / speed) * speedLimit;
         }
