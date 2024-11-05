@@ -81,18 +81,22 @@ void Personnage::handleInput(SDL_Event& monevent) {
         if (monevent.type == SDL_KEYDOWN) {
             switch (monevent.key.keysym.sym) {
                 case SDLK_UP:
+                case SDLK_z:
                     if (y > 0) y -= TAILLE_PLONGEUR / 2;
                     currentDirection = HAUT;
                     break;
                 case SDLK_DOWN:
+                case SDLK_s:
                     if (y < MAP_HEIGHT - TAILLE_PLONGEUR) y += TAILLE_PLONGEUR / 2;
                     currentDirection = BAS;
                     break;
                 case SDLK_LEFT:
+                case SDLK_q:
                     if (x > 0) x -= TAILLE_PLONGEUR / 2;
                     currentDirection = GAUCHE;
                     break;
                 case SDLK_RIGHT:
+                case SDLK_d:
                     if (x < MAP_WIDTH - TAILLE_PLONGEUR) x += TAILLE_PLONGEUR / 2;
                     currentDirection = DROITE;
                     break;
