@@ -1,117 +1,62 @@
-#include "poisson.h"
+#include "Poisson.h"
 #include <cmath>
-#include <cstdlib>
-#include <iostream>
+#include <algorithm>
 
-#define WIDTH 800
-#define HEIGHT 600
-#define MAX_SPEED 4.0
-
-// Constructeur Poisson
-Poisson::Poisson() {
-    x = rand() % WIDTH;
-    y = rand() % HEIGHT;
-    vx = ((float)rand() / RAND_MAX) * MAX_SPEED * 2 - MAX_SPEED;
-    vy = ((float)rand() / RAND_MAX) * MAX_SPEED * 2 - MAX_SPEED;
+Poisson::Poisson(float x, float y) {
+    position.x = static_cast<int>(x);
+    position.y = static_cast<int>(y);
+    velocity.x = 0;
+    velocity.y = 0;
 }
 
-// Calcul de la distance entre deux poissons
-float Poisson::distance(const Poisson& other) const {
-    return sqrtf((x - other.x) * (x - other.x) + (y - other.y) * (y - other.y));
+void Poisson::update(const std::vector<Poisson>& poissons) {
+    applyBehaviors(poissons);
+    position.x += velocity.x;
+    position.y += velocity.y;
+
+    // Wrap around screen
+    if (position.x > 800) position.x = 0;
+    else if (position.x < 0) position.x = 800;
+    if (position.y > 600) position.y = 0;
+    else if (position.y < 0) position.y = 600;
 }
 
-// Règles : séparation, alignement, cohésion
-void Poisson::separation(const std::vector<Poisson>& poissons) { /*...*/ }
-void Poisson::alignement(const std::vector<Poisson>& poissons) { /*...*/ }
-void Poisson::cohesion(const std::vector<Poisson>& poissons) { /*...*/ }
-
-// Mise à jour de la position des poissons
-void Poisson::update(const std::vector<Poisson>& poissons) { /*...*/ }
-
-// Dessiner le poisson à l'écran
-void Poisson::draw(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, 255, 128, 0, 255);  // Orange pour les poissons
-    SDL_Rect rect = {(int)x, (int)y, 5, 5};            // Un rectangle pour chaque poisson
-    SDL_RenderFillRect(renderer, &rect);
+void Poisson::draw(SDL_Renderer* renderer) const {  // Ajout de 'const' ici
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderDrawPoint(renderer, position.x, position.y);
 }
 
-// Constructeur Simulation
-Simulation::Simulation(int num_poissons) : window(nullptr), renderer(nullptr) {
-    poissons.resize(num_poissons);
-    init_poissons();
-    if (!init_SDL()) {
-        std::cerr << "Erreur d'initialisation de SDL\n";
+void Poisson::applyBehaviors(const std::vector<Poisson>& poissons) {
+    SDL_Point alignment = align(poissons);
+    SDL_Point cohesion = cohesionBehavior(poissons);  // Utilisation du nouveau nom
+    SDL_Point separation = separationBehavior(poissons);  // Utilisation du nouveau nom
+
+    velocity.x += alignment.x + cohesion.x + separation.x;
+    velocity.y += alignment.y + cohesion.y + separation.y;
+
+    // Limit speed
+    float speedLimit = 4.0f;
+    float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+    if (speed > speedLimit) {
+        velocity.x = (velocity.x / speed) * speedLimit;
+        velocity.y = (velocity.y / speed) * speedLimit;
     }
 }
 
-// Initialisation SDL
-bool Simulation::init_SDL() {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "Erreur d'initialisation SDL: " << SDL_GetError() << "\n";
-        return false;
-    }
-    window = SDL_CreateWindow("Simulation de Poissons", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
-    if (!window) {
-        std::cerr << "Erreur de création de la fenêtre SDL: " << SDL_GetError() << "\n";
-        return false;
-    }
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
-        std::cerr << "Erreur de création du renderer: " << SDL_GetError() << "\n";
-        return false;
-    }
-    return true;
+SDL_Point Poisson::align(const std::vector<Poisson>& poissons) {
+    // Align with nearby poissons
+    // (Implementation omitted for brevity)
+    return {0, 0};
 }
 
-// Initialisation des poissons
-void Simulation::init_poissons() {
-    for (auto& poisson : poissons) {
-        poisson = Poisson();
-    }
+SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons) {
+    // Move towards the average position of nearby poissons
+    // (Implementation omitted for brevity)
+    return {0, 0};
 }
 
-// Mettre à jour les poissons
-void Simulation::update_poissons() {
-    for (auto& poisson : poissons) {
-        poisson.update(poissons);
-    }
-}
-
-// Affichage des poissons
-void Simulation::render() {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);  // Noir pour le fond
-    SDL_RenderClear(renderer);
-
-    for (auto& poisson : poissons) {
-        poisson.draw(renderer);  // Dessiner chaque poisson
-    }
-
-    SDL_RenderPresent(renderer);
-}
-
-// Nettoyer SDL
-void Simulation::clean_up() {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-}
-
-// Exécuter la simulation
-void Simulation::run(int steps) {
-    bool running = true;
-    SDL_Event event;
-
-    for (int step = 0; step < steps && running; ++step) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                running = false;
-            }
-        }
-
-        update_poissons();
-        render();
-        SDL_Delay(16);  // Pour une cadence de ~60 FPS
-    }
-
-    clean_up();
+SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons) {
+    // Avoid crowding nearby poissons
+    // (Implementation omitted for brevity)
+    return {0, 0};
 }
