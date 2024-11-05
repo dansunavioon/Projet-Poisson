@@ -1,3 +1,4 @@
 CMakeLists.txt
-cmake-build-debug/
+cmake-build-debug/*
+!cmake-build-debug/image_perso
 .idea
