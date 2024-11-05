@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <vector>
+#include <cstdlib> // Pour rand() et RAND_MAX
 #include "Poisson/Poisson.h"
 
 int main(int argc, char* argv[]) {
@@ -29,8 +30,10 @@ int main(int argc, char* argv[]) {
 
     // Création des poissons
     std::vector<Poisson> poissons;
-    for (int i = 0; i < 200; ++i) { // Modifié pour créer 200 poissons
-        poissons.emplace_back(rand() % 800, rand() % 600);
+    for (int i = 0; i < 600; ++i) { // Modifié pour créer 600 poissons
+        float randomX = static_cast<float>(rand() % 800); // Position X aléatoire
+        float randomY = static_cast<float>(rand() % 600); // Position Y aléatoire
+        poissons.emplace_back(randomX, randomY);
     }
 
     // Boucle principale
