@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 
     // Création des poissons
     std::vector<Poisson> poissons;
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 200; ++i) { // Modifié pour créer 200 poissons
         poissons.emplace_back(rand() % 800, rand() % 600);
     }
 
