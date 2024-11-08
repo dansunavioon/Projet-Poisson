@@ -1,6 +1,7 @@
 #include "Poisson.h"
 #include <cmath>
 #include <algorithm>
+#include <cstdlib>
 
 Poisson::Poisson(float x, float y)
 {
@@ -8,6 +9,9 @@ Poisson::Poisson(float x, float y)
     position.y = static_cast<int>(y);
     velocity.x = (rand() % 3 - 1); // Vitesse initiale aléatoire
     velocity.y = (rand() % 3 - 1); // Vitesse initiale aléatoire
+
+    // Détermine si le poisson est indépendant avec une probabilité de 50 %
+    independent = (rand() % 2 == 0);
 }
 
 void Poisson::update(const std::vector<Poisson>& poissons)
@@ -25,8 +29,8 @@ void Poisson::update(const std::vector<Poisson>& poissons)
 
 void Poisson::draw(SDL_Renderer* renderer) const
 {
-    // Dessine un triangle représentant un poisson
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Couleur rouge pour le poisson
+    // Couleur rouge pour les poissons en groupe, bleu pour les indépendants
+    SDL_SetRenderDrawColor(renderer, independent ? 0 : 255, 0, independent ? 255 : 0, 255);
 
     // Points du triangle (un poisson)
     SDL_Point points[4];
@@ -40,13 +44,15 @@ void Poisson::draw(SDL_Renderer* renderer) const
 
 void Poisson::applyBehaviors(const std::vector<Poisson>& poissons)
 {
-    SDL_Point alignment = align(poissons);
-    SDL_Point cohesion = cohesionBehavior(poissons);
-    SDL_Point separation = separationBehavior(poissons);
+    if (!independent) // Applique les comportements de groupe seulement si le poisson n'est pas indépendant
+    {
+        SDL_Point alignment = align(poissons);
+        SDL_Point cohesion = cohesionBehavior(poissons);
+        SDL_Point separation = separationBehavior(poissons);
 
-    // Appliquer les comportements pour ajuster la vitesse
-    velocity.x += alignment.x + cohesion.x + separation.x;
-    velocity.y += alignment.y + cohesion.y + separation.y;
+        velocity.x += alignment.x + cohesion.x + separation.x;
+        velocity.y += alignment.y + cohesion.y + separation.y;
+    }
 
     // Limiter la vitesse
     float speedLimit = 4.0f;
