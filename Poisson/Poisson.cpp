@@ -9,8 +9,8 @@ Poisson::Poisson(float x, float y)
     velocity.x = (rand() % 3 - 1); // Vitesse initiale aléatoire
     velocity.y = (rand() % 3 - 1); // Vitesse initiale aléatoire
 
-    // Détermine si le poisson est indépendant avec une probabilité de 50 %
-    independent = (rand() % 2 == 0);
+    // Réduit la probabilité d'indépendance à 25 % au lieu de 50 %
+    independent = (rand() % 4 == 0);  // Chance de 25% pour être indépendant
 
     // Assigner un groupe aléatoire parmi un nombre défini de groupes
     groupId = rand() % MAX_GROUPS; // MAX_GROUPS défini comme le nombre maximum de groupes
@@ -19,6 +19,14 @@ Poisson::Poisson(float x, float y)
 void Poisson::update(const std::vector<Poisson>& poissons)
 {
     applyBehaviors(poissons);
+
+    // Si le poisson est indépendant, ajoute un léger mouvement aléatoire
+    if (independent)
+    {
+        velocity.x += (rand() % 3 - 1); // Mouvement aléatoire léger
+        velocity.y += (rand() % 3 - 1); // Mouvement aléatoire léger
+    }
+
     position.x += velocity.x;
     position.y += velocity.y;
 
@@ -91,8 +99,8 @@ SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons)
         steering.x /= total;
         steering.y /= total;
 
-        steering.x -= position.x+16;
-        steering.y -= position.y+16;
+        steering.x -= position.x + 16;
+        steering.y -= position.y + 16;
 
         float speedLimit = 4.0f;
         float speed = std::sqrt(steering.x * steering.x + steering.y * steering.y);
@@ -145,3 +153,4 @@ SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons)
 
     return steering;
 }
+
