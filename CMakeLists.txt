@@ -7,8 +7,6 @@ find_package(SDL2 REQUIRED)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(Projet_Poisson main.cpp
-        Poisson/Poisson.cpp
-        Poisson/Poisson.h
         Map/Map.cpp
         Map/Map.h
         typeDef.h
