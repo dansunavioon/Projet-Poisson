@@ -1,5 +1,5 @@
 CMakeLists.txt
 cmake-build-debug/
-!cmake-build-debug/assets/
+!cmake-build-debug/assets
 .idea
 .DS_Store
