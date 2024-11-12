@@ -1,5 +1,5 @@
 CMakeLists.txt
 cmake-build-debug/
 .idea
-!cmake-build-debug/Image_Poisson
+!cmake-build-debug/assets
 .DS_Store
