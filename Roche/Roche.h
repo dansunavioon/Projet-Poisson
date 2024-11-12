@@ -10,12 +10,13 @@
 
 class Roche {
     SDL_Renderer* renderer;
+    SDL_Texture* texture;
     int height;
     int width;
     int x;
     int y;
 
-    void display() const;
+    void display();
 
     public:
         Roche(SDL_Renderer* renderer, int height, int width, int x, int y);
