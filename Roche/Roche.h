@@ -21,6 +21,4 @@ class Roche {
         Roche(SDL_Renderer* renderer, int height, int width, int x, int y);
 };
 
-
-
 #endif //ROCHE_H

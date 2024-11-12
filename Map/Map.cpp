@@ -50,7 +50,7 @@ int Map::display()
         int xPosition = rand() % (this->width - obstacleWidth); // Position horizontale aléatoire
 
         // Calcul de la position du bas de l'écran
-        new Roche(this->renderer, obstacleHeight, obstacleWidth, xPosition,this->height - obstacleHeight);
+        new Roche(this->renderer, obstacleHeight, obstacleWidth, xPosition, this->height - obstacleHeight);
     }
 
     // Mise à jour de l'affichage
