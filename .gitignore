@@ -1,5 +1,5 @@
 CMakeLists.txt
 cmake-build-debug/
-!cmake-build-debug/image_map
+!cmake-build-debug/image_map/
 .idea
 .DS_Store
