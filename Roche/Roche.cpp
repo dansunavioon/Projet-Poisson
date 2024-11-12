@@ -9,7 +9,7 @@ Roche::Roche(SDL_Renderer* renderer, int height, int width, int x, int y)
 void Roche::display() {
     const SDL_Rect renderQuad = { this->x, this->y, this->width, this->height };
 
-    SDL_Surface* tempSurface = SDL_LoadBMP("../cmake-build-debug/image_map/roche.bmp");
+    SDL_Surface* tempSurface = SDL_LoadBMP("../cmake-build-debug/image_map/roche1.bmp");
     if (!tempSurface) {
         SDL_Log("Erreur lors du chargement de l'image roche.bmp: %s", SDL_GetError());
         return;
