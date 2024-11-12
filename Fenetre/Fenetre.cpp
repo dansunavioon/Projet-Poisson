@@ -1,5 +1,6 @@
 #include "Fenetre.h"
 #include "../Personage/Personnage.h"
+#include "../Poisson/Poisson.h"
 #include "../Personage/var_personnage.h"
 
 
@@ -10,6 +11,7 @@
  * @param height
  * @param width
  */
+
 Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, const int width){
     this->window = window;
     this->renderer = renderer;
@@ -48,6 +50,16 @@ int Fenetre::display(){
     // Créer un objet Personnage avec le renderer
     Personnage plongeur(renderer);
 
+    // Création des poissons avec des positions de départ aléatoires
+    std::vector<Poisson> poissons;
+    int nombrePoissons = 600; // Nombre de poissons
+    for (int i = 0; i < nombrePoissons; ++i)
+    {
+        float randomX = static_cast<float>(rand() % 800); // Position X aléatoire
+        float randomY = static_cast<float>(rand() % 600); // Position Y aléatoire
+        poissons.emplace_back(randomX, randomY);
+    }
+
     SDL_Event events;
 
     // Boucle infinie qui empeche la destruction de la fenetre tant que la fenetre n'est pas fermée
@@ -79,19 +91,27 @@ int Fenetre::display(){
             animationTimer = currentTime; // Réinitialiser le timer
         }
 
-        // Mettre à jour l'état du personnage (animation, position, etc.)
-        // NB : Penser à faire en sorte que la boucle de calcul ait un petit wait (à limiter, essayer de le faire pour que chaque frame de calcul dure le même temps)
-        // NB : pour les animations : là ça doit être obligatoire de limiter les updates mais bien distinguer du calcul (vitesse des animations potentiellement très différentes des calculs)
+        // Mise à jour des poissons
+        for (auto& poisson : poissons) {
+            poisson.update(poissons);
+        }
 
         // Mettre à jour la caméra en fonction de la position du personnage
         SDL_Rect personnageRect = {plongeur.getX(), plongeur.getY(), TAILLE_PLONGEUR, TAILLE_PLONGEUR};
         updateCamera(personnageRect);
 
         // Rafraîchir l'écran
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
         // Rendre le personnage à sa nouvelle position
         plongeur.render();
+
+        // Dessine les poissons
+        for (const auto& poisson : poissons)
+        {
+            poisson.draw(renderer);
+        }
 
         // Afficher le rendu à l'écran
         SDL_RenderPresent(renderer);
