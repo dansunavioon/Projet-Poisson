@@ -7,11 +7,13 @@
 class Poisson
 {
 public:
-    Poisson(float x, float y);
+    Poisson(SDL_Renderer* renderer, float x, float y);
     void update(const std::vector<Poisson>& poissons);
-    void draw(SDL_Renderer* renderer) const;
+    void draw(SDL_Renderer* renderer);
 
 private:
+    SDL_Renderer* renderer;
+    SDL_Texture* texture;
     SDL_Point position;
     SDL_Point velocity;
     bool independent;

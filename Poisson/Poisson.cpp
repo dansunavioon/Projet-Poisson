@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 
-Poisson::Poisson(float x, float y)
+Poisson::Poisson(SDL_Renderer* renderer, float x, float y): renderer(renderer), texture(nullptr)
 {
     position.x = static_cast<int>(x);
     position.y = static_cast<int>(y);
@@ -37,19 +37,35 @@ void Poisson::update(const std::vector<Poisson>& poissons)
     else if (position.y < 0) position.y = 600;
 }
 
-void Poisson::draw(SDL_Renderer* renderer) const
+void Poisson::draw(SDL_Renderer* renderer)
 {
     // Couleur rouge pour les poissons en groupe, blanc pour les indépendants
     SDL_SetRenderDrawColor(renderer, independent ? 255 : 255, independent ? 255 : 0, independent ? 255 : 0, 255);
 
-    // Points du triangle (un poisson)
-    SDL_Point points[4];
-    points[0] = {position.x, position.y}; // Point avant
-    points[1] = {position.x - 10, position.y + 5}; // Point inférieur gauche
-    points[2] = {position.x - 10, position.y - 5}; // Point supérieur gauche
-    points[3] = {position.x, position.y}; // Fermer le triangle
+    SDL_Rect rect;
+    rect.x = position.x - 5; // Centrer le rectangle autour de position.x
+    rect.y = position.y - 5; // Centrer le rectangle autour de position.y
+    rect.w = 10;             // Largeur du rectangle
+    rect.h = 10;             // Hauteur du rectangle
 
-    SDL_RenderDrawLines(renderer, points, 4); // Dessiner le poisson
+    SDL_Surface* tempSurface = SDL_LoadBMP("Image_Poisson/Poisson1.bmp");
+    if (!tempSurface) {
+        SDL_Log("Erreur lors du chargement de l'image roche.bmp: %s", SDL_GetError());
+        return;
+    }
+
+    this->texture = SDL_CreateTextureFromSurface(this->renderer, tempSurface);
+    SDL_FreeSurface(tempSurface); // Libérer la surface après la création de la texture
+
+    if (!this->texture) {
+        SDL_Log("Erreur lors de la création de la texture: %s", SDL_GetError());
+        return;
+    }
+
+    SDL_RenderCopy(this->renderer, this->texture, nullptr, &rect);
+
+    SDL_DestroyTexture(this->texture);  // Libérer la texture après affichage
+
 }
 
 void Poisson::applyBehaviors(const std::vector<Poisson>& poissons)

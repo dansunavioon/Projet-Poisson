@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     {
         float randomX = static_cast<float>(rand() % 800); // Position X aléatoire
         float randomY = static_cast<float>(rand() % 600); // Position Y aléatoire
-        poissons.emplace_back(randomX, randomY);
+        poissons.emplace_back(renderer, randomX, randomY);
     }
 
     // Boucle principale
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         SDL_RenderClear(renderer);
 
         // Dessine les poissons
-        for (const auto& poisson : poissons)
+        for (auto& poisson : poissons)
         {
             poisson.draw(renderer);
         }
