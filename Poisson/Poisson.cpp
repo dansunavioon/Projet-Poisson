@@ -1,8 +1,9 @@
 #include "Poisson.h"
 #include <cmath>
 #include <cstdlib>
+#include <iostream> // Pour le débogage
 
-Poisson::Poisson(SDL_Renderer* renderer, float x, float y): renderer(renderer), texture(nullptr)
+Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): renderer(renderer), texture(nullptr), independent(independent)
 {
     position.x = static_cast<int>(x);
     position.y = static_cast<int>(y);
@@ -37,7 +38,7 @@ void Poisson::update(const std::vector<Poisson>& poissons)
     else if (position.y < 0) position.y = 600;
 }
 
-void Poisson::draw(SDL_Renderer* renderer)
+void Poisson::draw(SDL_Renderer* renderer, float a, float b)
 {
     // Couleur rouge pour les poissons en groupe, blanc pour les indépendants
     SDL_SetRenderDrawColor(renderer, independent ? 255 : 255, independent ? 255 : 0, independent ? 255 : 0, 255);

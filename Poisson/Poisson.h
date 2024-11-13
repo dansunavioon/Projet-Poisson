@@ -7,9 +7,10 @@
 class Poisson
 {
 public:
-    Poisson(SDL_Renderer* renderer, float x, float y);
+    Poisson(SDL_Renderer* renderer, float x, float y, bool independent);
+    ~Poisson();
     void update(const std::vector<Poisson>& poissons);
-    void draw(SDL_Renderer* renderer);
+    void draw(SDL_Renderer* renderer) const;
 
 private:
     SDL_Renderer* renderer;
