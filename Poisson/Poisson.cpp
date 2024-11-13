@@ -58,7 +58,7 @@ void Poisson::update(const std::vector<Poisson>& poissons)
     else if (position.y < 0) position.y = 600;
 }
 
-void Poisson::draw() const {
+void Poisson::draw(SDL_Renderer* renderer) const {
     if (texture) {
         SDL_Rect renderQuad = {position.x, position.y, 32, 32}; // Ajuster la taille
         SDL_RenderCopy(renderer, texture, NULL, &renderQuad);
