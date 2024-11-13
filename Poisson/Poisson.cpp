@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream> // Pour le débogage
 
-Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): renderer(renderer), texture(nullptr), independent(independent)
+Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): renderer(renderer), independent(independent)
 {
     position.x = static_cast<int>(x);
     position.y = static_cast<int>(y);
@@ -25,8 +25,8 @@ Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): re
         std::cerr << "Erreur de chargement de l'image poisson.bmp : " << SDL_GetError() << std::endl;
         texture = nullptr;
     }
-    // Réduit la probabilité d'indépendance à 25 % au lieu de 50 %
-    independent = (rand() % 4 == 0);  // Chance de 25% pour être indépendant
+    // La probabilité d'indépendance à 25
+    //independent = (rand() % 4 == 0);  // Chance de 25% pour être indépendant
 
     // Assigner un groupe aléatoire parmi un nombre défini de groupes
     groupId = rand() % MAX_GROUPS; // MAX_GROUPS défini comme le nombre maximum de groupes
@@ -65,6 +65,18 @@ void Poisson::draw(SDL_Renderer* renderer) const {
     } else {
         std::cerr << "Texture non chargée pour ce poisson" << std::endl;
     }
+    // Couleur rouge pour les poissons en groupe, blanc pour les indépendants
+    SDL_SetRenderDrawColor(renderer, independent ? 255 : 255, independent ? 255 : 0, independent ? 255 : 0, 255);
+
+    // Points du triangle (un poisson)
+    SDL_Point points[4];
+    points[0] = {position.x, position.y}; // Point avant
+    points[1] = {position.x - 10, position.y + 5}; // Point inférieur gauche
+    points[2] = {position.x - 10, position.y - 5}; // Point supérieur gauche
+    points[3] = {position.x, position.y}; // Fermer le triangle
+
+    SDL_RenderDrawLines(renderer, points, 4); // Dessiner le poisson
+
 }
 
 
@@ -169,4 +181,3 @@ SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons)
 
     return steering;
 }
-
