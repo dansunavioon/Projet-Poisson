@@ -9,12 +9,32 @@ Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): re
     position.y = static_cast<int>(y);
     velocity.x = (rand() % 3 - 1); // Vitesse initiale aléatoire
     velocity.y = (rand() % 3 - 1); // Vitesse initiale aléatoire
-
+    // Charger l'image du poisson
+    SDL_Surface* tempSurface = SDL_LoadBMP("Image_Poisson/Poisson1.bmp");
+    if (tempSurface)
+    {
+        texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+        SDL_FreeSurface(tempSurface);
+        if (!texture)
+        {
+            std::cerr << "Erreur de création de la texture : " << SDL_GetError() << std::endl;
+        }
+    }
+    else
+    {
+        std::cerr << "Erreur de chargement de l'image poisson.bmp : " << SDL_GetError() << std::endl;
+        texture = nullptr;
+    }
     // Réduit la probabilité d'indépendance à 25 % au lieu de 50 %
     independent = (rand() % 4 == 0);  // Chance de 25% pour être indépendant
 
     // Assigner un groupe aléatoire parmi un nombre défini de groupes
     groupId = rand() % MAX_GROUPS; // MAX_GROUPS défini comme le nombre maximum de groupes
+}
+
+Poisson::~Poisson()
+{
+    SDL_DestroyTexture(texture);
 }
 
 void Poisson::update(const std::vector<Poisson>& poissons)
@@ -38,36 +58,15 @@ void Poisson::update(const std::vector<Poisson>& poissons)
     else if (position.y < 0) position.y = 600;
 }
 
-void Poisson::draw(SDL_Renderer* renderer, float a, float b)
-{
-    // Couleur rouge pour les poissons en groupe, blanc pour les indépendants
-    SDL_SetRenderDrawColor(renderer, independent ? 255 : 255, independent ? 255 : 0, independent ? 255 : 0, 255);
-
-    SDL_Rect rect;
-    rect.x = position.x - 5; // Centrer le rectangle autour de position.x
-    rect.y = position.y - 5; // Centrer le rectangle autour de position.y
-    rect.w = 10;             // Largeur du rectangle
-    rect.h = 10;             // Hauteur du rectangle
-
-    SDL_Surface* tempSurface = SDL_LoadBMP("Image_Poisson/Poisson1.bmp");
-    if (!tempSurface) {
-        SDL_Log("Erreur lors du chargement de l'image roche.bmp: %s", SDL_GetError());
-        return;
+void Poisson::draw() const {
+    if (texture) {
+        SDL_Rect renderQuad = {position.x, position.y, 32, 32}; // Ajuster la taille
+        SDL_RenderCopy(renderer, texture, NULL, &renderQuad);
+    } else {
+        std::cerr << "Texture non chargée pour ce poisson" << std::endl;
     }
-
-    this->texture = SDL_CreateTextureFromSurface(this->renderer, tempSurface);
-    SDL_FreeSurface(tempSurface); // Libérer la surface après la création de la texture
-
-    if (!this->texture) {
-        SDL_Log("Erreur lors de la création de la texture: %s", SDL_GetError());
-        return;
-    }
-
-    SDL_RenderCopy(this->renderer, this->texture, nullptr, &rect);
-
-    SDL_DestroyTexture(this->texture);  // Libérer la texture après affichage
-
 }
+
 
 void Poisson::applyBehaviors(const std::vector<Poisson>& poissons)
 {
