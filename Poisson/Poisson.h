@@ -1,6 +1,5 @@
 #ifndef POISSON_H
 #define POISSON_H
-
 #include <SDL.h>
 #include <vector>
 
