@@ -3,8 +3,7 @@
 #include <SDL.h>
 #include <vector>
 
-class Poisson
-{
+class Poisson {
 public:
     Poisson(SDL_Renderer* renderer, float x, float y, bool independent);
     ~Poisson();
@@ -17,13 +16,16 @@ private:
     SDL_Point position;
     SDL_Point velocity;
     bool independent;
-    int groupId;  // Ajout de l'ID de groupe pour chaque poisson
+    int groupId;
 
     void applyBehaviors(const std::vector<Poisson>& poissons);
     SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
     SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
 
-    static const int MAX_GROUPS = 5; // Définir le nombre de groupes max (ajustez selon vos besoins)
+    static constexpr float MAX_SPEED = 2.0f;
+    static constexpr float COHESION_FORCE = 0.05f;
+    static constexpr float SEPARATION_FORCE = 0.1f;
+    static const int MAX_GROUPS = 5;
 };
 
 #endif // POISSON_H
