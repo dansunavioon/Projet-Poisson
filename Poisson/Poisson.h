@@ -1,5 +1,6 @@
 #ifndef POISSON_H
 #define POISSON_H
+
 #include <SDL.h>
 #include <vector>
 
@@ -15,6 +16,7 @@ private:
     SDL_Texture* texture;
     SDL_Point position;
     SDL_Point velocity;
+    double angle; // Angle de rotation en degrés
     bool independent;
     int groupId;
 
@@ -22,9 +24,6 @@ private:
     SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
     SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
 
-    static constexpr float MAX_SPEED = 2.0f;
-    static constexpr float COHESION_FORCE = 0.05f;
-    static constexpr float SEPARATION_FORCE = 0.1f;
     static const int MAX_GROUPS = 5;
 };
 
