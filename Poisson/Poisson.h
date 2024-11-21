@@ -24,7 +24,7 @@ private:
     SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
     SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
 
-    static const int MAX_GROUPS = 5;
+    static const int MAX_GROUPS = 10;
 };
 
 #endif // POISSON_H
