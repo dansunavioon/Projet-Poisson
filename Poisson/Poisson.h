@@ -4,7 +4,8 @@
 #include <SDL.h>
 #include <vector>
 
-class Poisson {
+class Poisson
+{
 public:
     Poisson(SDL_Renderer* renderer, float x, float y, bool independent);
     ~Poisson();

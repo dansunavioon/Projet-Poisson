@@ -8,7 +8,8 @@
 std::vector<Poisson> poissons;
 std::mutex poissonsMutex;
 
-Uint32 updatePoissons(Uint32 interval, void* param) {
+Uint32 updatePoissons(Uint32 interval, void* param)
+{
     std::lock_guard<std::mutex> lock(poissonsMutex);
     for (auto& poisson : poissons) {
         poisson.update(poissons);
@@ -16,21 +17,25 @@ Uint32 updatePoissons(Uint32 interval, void* param) {
     return interval;
 }
 
-int main(int argc, char* argv[]) {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
+int main(int argc, char* argv[])
+{
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+    {
         std::cerr << "Erreur SDL_Init : " << SDL_GetError() << std::endl;
         return -1;
     }
 
-    SDL_Window* window = SDL_CreateWindow("Simulation de poissons", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
-    if (!window) {
+    SDL_Window* window = SDL_CreateWindow("Poissons", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!window)
+    {
         std::cerr << "Erreur de création de la fenêtre : " << SDL_GetError() << std::endl;
         SDL_Quit();
         return -1;
     }
 
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
+    if (!renderer)
+    {
         std::cerr << "Erreur de création du renderer : " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -39,8 +44,9 @@ int main(int argc, char* argv[]) {
 
     srand(static_cast<unsigned int>(time(0)));
 
-    int nombrePoissons = 150;
-    for (int i = 0; i < nombrePoissons; ++i) {
+    int nombrePoissons = 200;
+    for (int i = 0; i < nombrePoissons; ++i)
+    {
         float randomX = static_cast<float>(rand() % 800);
         float randomY = static_cast<float>(rand() % 600);
         bool independent = (rand() % 4 == 0);
@@ -49,7 +55,8 @@ int main(int argc, char* argv[]) {
 
     const int updateInterval = 16;
     SDL_TimerID timerID = SDL_AddTimer(updateInterval, updatePoissons, nullptr);
-    if (!timerID) {
+    if (!timerID)
+    {
         std::cerr << "Erreur de création du timer : " << SDL_GetError() << std::endl;
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
@@ -60,9 +67,12 @@ int main(int argc, char* argv[]) {
     bool running = true;
     SDL_Event event;
 
-    while (running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+    while (running)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
                 running = false;
             }
         }
@@ -72,7 +82,8 @@ int main(int argc, char* argv[]) {
 
         {
             std::lock_guard<std::mutex> lock(poissonsMutex);
-            for (const auto& poisson : poissons) {
+            for (const auto& poisson : poissons)
+            {
                 poisson.draw(renderer);
             }
         }
