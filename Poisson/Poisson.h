@@ -12,7 +12,9 @@ extern const int MAP_HEIGHT;
 extern const int CAMERA_WIDTH;
 extern const int CAMERA_HEIGHT;
 
-class Poisson {
+
+class Poisson
+{
 public:
     Poisson(SDL_Renderer* renderer, float x, float y, bool independent);
     ~Poisson();
@@ -24,16 +26,16 @@ private:
     void applyBehaviors(const std::vector<Poisson>& poissons);
     SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
     SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
+    float angle; // Angle actuel du poisson (pour la rotation)
 
     SDL_Point position;
     SDL_Point velocity;
     SDL_Renderer* renderer;
     SDL_Texture* texture;
-    float angle;
     bool independent;
     int groupId;
 
-    static constexpr int MAX_GROUPS = 10;
+    static constexpr int MAX_GROUPS = 15;
 };
 
 #endif // POISSON_H

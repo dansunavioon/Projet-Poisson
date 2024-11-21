@@ -11,7 +11,8 @@ std::mutex poissonsMutex;
 Uint32 updatePoissons(Uint32 interval, void* param)
 {
     std::lock_guard<std::mutex> lock(poissonsMutex);
-    for (auto& poisson : poissons) {
+    for (auto& poisson : poissons)
+    {
         poisson.update(poissons);
     }
     return interval;
@@ -28,26 +29,25 @@ const int CAMERA_HEIGHT = 600;
 // Position initiale de la caméra
 SDL_Point cameraPosition = {0, 0};
 
-int SDL_main(int argc, char* argv[]) {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+int SDL_main(int argc, char* argv[])
+{
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
         std::cerr << "Erreur lors de l'initialisation de SDL : " << SDL_GetError() << std::endl;
         return -1;
     }
 
-    SDL_Window* window = SDL_CreateWindow(
-        "Simulation de poissons",
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        CAMERA_WIDTH, CAMERA_HEIGHT,
-        SDL_WINDOW_SHOWN
-    );
-    if (!window) {
+    SDL_Window* window = SDL_CreateWindow("Simulation de poissons",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,CAMERA_WIDTH, CAMERA_HEIGHT,SDL_WINDOW_SHOWN);
+    if (!window)
+    {
         std::cerr << "Erreur lors de la création de la fenêtre : " << SDL_GetError() << std::endl;
         SDL_Quit();
         return -1;
     }
 
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (!renderer) {
+    if (!renderer)
+    {
         std::cerr << "Erreur lors de la création du renderer : " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -61,7 +61,7 @@ int SDL_main(int argc, char* argv[]) {
     {
         float randomX = static_cast<float>(rand() % 800);
         float randomY = static_cast<float>(rand() % 600);
-        bool independent = (rand() % 4 == 0);
+        bool independent = (rand() % 6 == 0);
         poissons.emplace_back(renderer, randomX, randomY, independent);
     }
 
@@ -81,9 +81,12 @@ int SDL_main(int argc, char* argv[]) {
     SDL_Event event;
     const int cameraSpeed = 10;
 
-    while (running) {
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
+    while (running)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
                 running = false;
             }
         }
@@ -101,7 +104,8 @@ int SDL_main(int argc, char* argv[]) {
         if (cameraPosition.x > MAP_WIDTH - CAMERA_WIDTH) cameraPosition.x = MAP_WIDTH - CAMERA_WIDTH;
         if (cameraPosition.y > MAP_HEIGHT - CAMERA_HEIGHT) cameraPosition.y = MAP_HEIGHT - CAMERA_HEIGHT;
 
-        for (auto& poisson : poissons) {
+        for (auto& poisson : poissons)
+        {
             poisson.update(poissons);
         }
 
