@@ -11,7 +11,7 @@ Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent)
     velocity.y = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
 
     // Charger l'image du poisson
-    SDL_Surface* tempSurface = SDL_LoadBMP("Image_Poisson/Poisson1.bmp");
+    SDL_Surface* tempSurface = SDL_LoadBMP("Image_Poisson/Poisson12.bmp");
     if (tempSurface) {
         texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
         SDL_FreeSurface(tempSurface);
@@ -37,7 +37,7 @@ void Poisson::update(const std::vector<Poisson>& poissons) {
     position.y += velocity.y;
 
     // Calcul de l'angle en fonction de la direction (vitesse)
-    angle = std::atan2(velocity.y, velocity.x) * 180 / M_PI;
+    angle = std::atan2(velocity.y, velocity.x) * 180 / M_PI; // Calcul de l'angle en degrés
 
     // Empêcher les poissons de sortir de l'écran
     if (position.x > 800) position.x = 0;
@@ -57,10 +57,11 @@ void Poisson::draw(SDL_Renderer* renderer) const {
 
         // Retourner l'image si la vélocité x est négative (le poisson va vers la gauche)
         if (velocity.x < 0) {
+            flip = SDL_FLIP_HORIZONTAL; // Retourner l'image horizontalement
             flip = SDL_FLIP_VERTICAL;
         }
 
-        // Dessiner l'image avec l'éventuel retournement
+        // Dessiner l'image avec l'angle de rotation et l'éventuel retournement
         SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, angle, &center, flip);
     }
 }
