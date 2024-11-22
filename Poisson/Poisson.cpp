@@ -57,7 +57,7 @@ void Poisson::draw(SDL_Renderer* renderer, const SDL_Point& cameraPosition) cons
 {
     if (texture)
     {
-        SDL_Rect renderQuad = {position.x - cameraPosition.x,position.y - cameraPosition.y,32,32}; // Ajustez la taille de l'image si nécessaire
+        SDL_Rect renderQuad = {position.x - cameraPosition.x,position.y - cameraPosition.y,50,50}; // Ajustez la taille de l'image si nécessaire
         SDL_Point center = {16, 16}; // Point central pour la rotation
 
         // Déterminer si l'image doit être retournée horizontalement
@@ -88,7 +88,7 @@ void Poisson::applyBehaviors(const std::vector<Poisson>& poissons)
     }
 
     // Limiter la vitesse
-    float speedLimit = 2.0f;
+    float speedLimit = 2.5f;
     float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
     if (speed > speedLimit)
     {
@@ -101,7 +101,7 @@ SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons)
 {
     SDL_Point steering = {0, 0};
     int total = 0;
-    float perceptionRadius = 50.0f;
+    float perceptionRadius = 55.0f;
 
     for (const auto& other : poissons)
     {
@@ -137,7 +137,7 @@ SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons)
 
     for (const auto& other : poissons)
     {
-        float distance = std::sqrt(std::pow(position.x - other.position.x, 3) + std::pow(position.y - other.position.y, 3));
+        float distance = std::sqrt(std::pow(position.x - other.position.x, 2) + std::pow(position.y - other.position.y, 2));
         if (&other != this && distance < perceptionRadius)
         {
             steering.x += position.x - other.position.x;
