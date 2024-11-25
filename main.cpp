@@ -19,8 +19,8 @@ Uint32 updatePoissons(Uint32 interval, void* param)
 }
 
 // Dimensions de la carte
-const int MAP_WIDTH = 3200;
-const int MAP_HEIGHT = 2400;
+const int MAP_WIDTH = 3000;
+const int MAP_HEIGHT = 2000;
 
 // Dimensions de la caméra
 const int CAMERA_WIDTH = 800;
