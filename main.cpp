@@ -56,7 +56,7 @@ int SDL_main(int argc, char* argv[])
 
     srand(static_cast<unsigned int>(time(0)));
 
-    int nombrePoissons = 200;
+    int nombrePoissons = 50;
     for (int i = 0; i < nombrePoissons; ++i)
     {
         float randomX = static_cast<float>(rand() % 800);
