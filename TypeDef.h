@@ -1,7 +1,3 @@
-//
-// Created by Florian BOISDRON on 17/09/2024.
-//
-
 #ifndef TYPEDEF_H
 #define TYPEDEF_H
 

@@ -15,7 +15,7 @@ void Roche::display() {
         return;
     }
 
-    this->texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
+    this->texture = SDL_CreateTextureFromSurface(this->renderer, tempSurface);
     SDL_FreeSurface(tempSurface); // Libérer la surface après la création de la texture
 
     if (!this->texture) {

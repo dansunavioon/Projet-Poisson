@@ -40,7 +40,7 @@ int Map::display()
     // Dessin des petits rectangles en bas pour représenter des obstacles
     int numObstacles = 10; // Nombre d'obstacles
     int minWidth = 50, maxWidth = 150; // Largeur minimale et maximale des obstacles
-    int obstacleHeight = 30; // Hauteur fixe des obstacles
+    int obstacleHeight = 50; // Hauteur fixe des obstacles
 
     SDL_SetRenderDrawColor(this->renderer, 139, 69, 19, 255); // Couleur marron pour les obstacles (RVB: brun)
 

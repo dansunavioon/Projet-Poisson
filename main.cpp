@@ -1,7 +1,3 @@
-
-
-// Including custom class
-
 #include "Map/Map.h"
 
 int main(int argc, char* argv[]) {
