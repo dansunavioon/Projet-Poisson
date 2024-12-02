@@ -43,8 +43,6 @@ int Fenetre::display(){
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 
-    // SDL_SetRenderDrawColor(this->renderer, 0, 0, 150, 100);
-
     // Dessin du fond bleu avec un dégradé vertical
     for (int y = 0; y < this->height; y++) {
         int blueValue = 255 - (y * 255 / this->height); // Calcul d'un dégradé du bleu (du plus clair au plus foncé)
@@ -109,8 +107,30 @@ int Fenetre::display(){
         updateCamera(personnageRect);
 
         // Rafraîchir l'écran
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Noir par défaut pour effacer
         SDL_RenderClear(renderer);
+
+        // Dessin du fond bleu avec un dégradé vertical en fonction de la caméra
+        for (int y = 0; y < camera.h; y++) {
+            int blueValue = 255 - ((camera.y + y) * 255 / MAP_HEIGHT); // Dégradé en fonction de la position sur la map
+            SDL_SetRenderDrawColor(renderer, 0, 0, blueValue, 255);
+            SDL_RenderDrawLine(renderer, 0, y, camera.w, y);
+        }
+
+        // Dessiner la jauge de profondeur sur le côté droit
+        SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255); // Couleur de fond de la jauge (gris clair)
+        SDL_Rect gaugeBackground = { JAUGE_X, MARGE_Y, JAUGE_WIDTH, JAUGE_HEIGHT };
+        SDL_RenderFillRect(renderer, &gaugeBackground);
+
+        // Calcul de la position de l'indicateur en fonction de la profondeur (position Y du plongeur)
+        int indicatorY = MARGE_Y + (plongeur.getY() * JAUGE_HEIGHT / MAP_HEIGHT);
+        indicatorY = std::min(std::max(indicatorY, MARGE_Y), MARGE_Y + JAUGE_HEIGHT); // Clamp pour éviter les débordements
+
+        // Dessiner l'indicateur de profondeur
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Couleur de l'indicateur (rouge)
+        SDL_Rect indicator = { JAUGE_X - 5, indicatorY - 5, JAUGE_WIDTH + 10, 10 }; // Indicateur élargi
+        SDL_RenderFillRect(renderer, &indicator);
+
 
         // Rendre le personnage à sa nouvelle position
         plongeur.render();

@@ -16,8 +16,6 @@ class Fenetre {
         int display();
         void updateCamera(const SDL_Rect& personnageRect); // Mise à jour de la camera
 
-
-
 };
 
 
