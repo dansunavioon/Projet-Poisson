@@ -29,7 +29,7 @@ const int CAMERA_HEIGHT = 600;
 // Position initiale de la caméra
 SDL_Point cameraPosition = {0, 0};
 
-int SDL_main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -93,15 +93,15 @@ int SDL_main(int argc, char* argv[])
         // Contrôle de la caméra avec les touches fléchées
         const Uint8* keystate = SDL_GetKeyboardState(NULL);
         if (keystate[SDL_SCANCODE_UP]) cameraPosition.y -= cameraSpeed;
-        if (keystate[SDL_SCANCODE_DOWN]) cameraPosition.y += cameraSpeed;
+        else if (keystate[SDL_SCANCODE_DOWN]) cameraPosition.y += cameraSpeed;
         if (keystate[SDL_SCANCODE_LEFT]) cameraPosition.x -= cameraSpeed;
-        if (keystate[SDL_SCANCODE_RIGHT]) cameraPosition.x += cameraSpeed;
+        else if (keystate[SDL_SCANCODE_RIGHT]) cameraPosition.x += cameraSpeed;
 
         // S'assurer que la caméra reste dans les limites de la carte
         if (cameraPosition.x < 0) cameraPosition.x = 0;
-        if (cameraPosition.y < 0) cameraPosition.y = 0;
-        if (cameraPosition.x > MAP_WIDTH - CAMERA_WIDTH) cameraPosition.x = MAP_WIDTH - CAMERA_WIDTH;
-        if (cameraPosition.y > MAP_HEIGHT - CAMERA_HEIGHT) cameraPosition.y = MAP_HEIGHT - CAMERA_HEIGHT;
+        else if (cameraPosition.y < 0) cameraPosition.y = 0;
+        else if (cameraPosition.x > MAP_WIDTH - CAMERA_WIDTH) cameraPosition.x = MAP_WIDTH - CAMERA_WIDTH;
+        else if (cameraPosition.y > MAP_HEIGHT - CAMERA_HEIGHT) cameraPosition.y = MAP_HEIGHT - CAMERA_HEIGHT;
 
         for (auto& poisson : poissons)
         {
