@@ -1,7 +1,5 @@
 #include "Map.h"
-
 #include <cstdlib>
-
 #include "../Roche/Roche.h"
 
 Map::Map(SDL_Window* window, SDL_Renderer* renderer, const int height, const int width)
@@ -40,13 +38,14 @@ int Map::display()
     // Dessin des petits rectangles en bas pour représenter des obstacles
     int numObstacles = 10; // Nombre d'obstacles
     int minWidth = 50, maxWidth = 150; // Largeur minimale et maximale des obstacles
-    int obstacleHeight = 50; // Hauteur fixe des obstacles
+    int minHeight = 10, maxHeight = 75;
 
     SDL_SetRenderDrawColor(this->renderer, 139, 69, 19, 255); // Couleur marron pour les obstacles (RVB: brun)
 
     for (int i = 0; i < numObstacles; i++) {
         // Taille aléatoire des obstacles
         int obstacleWidth = minWidth + rand() % (maxWidth - minWidth);
+        int obstacleHeight = minHeight + rand() % (maxHeight - minHeight);
         int xPosition = rand() % (this->width - obstacleWidth); // Position horizontale aléatoire
 
         // Calcul de la position du bas de l'écran
