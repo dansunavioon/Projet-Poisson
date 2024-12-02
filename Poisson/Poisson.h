@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <vector>
 
-// Dimensions de la carte (déclarées comme externes pour être accessibles dans les autres fichiers)
+// Dimensions de la carte
 extern const int MAP_WIDTH;
 extern const int MAP_HEIGHT;
 
@@ -26,7 +26,7 @@ private:
     void applyBehaviors(const std::vector<Poisson>& poissons);
     SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
     SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
-    float angle; // Angle actuel du poisson (pour la rotation)
+    float angle; // Angle actuel du poisson pour la rotation
 
     SDL_Point position;
     SDL_Point velocity;

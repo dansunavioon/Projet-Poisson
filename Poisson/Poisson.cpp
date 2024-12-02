@@ -3,8 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 
-Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent)
-    : renderer(renderer), independent(independent), angle(0.0)
+Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): renderer(renderer), independent(independent), angle(0.0)
 {
     position.x = static_cast<int>(x);
     position.y = static_cast<int>(y);
@@ -23,7 +22,7 @@ Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent)
     }
     else
     {
-        std::cerr << "Erreur de chargement de l'image poisson.bmp : " << SDL_GetError() << std::endl;
+        std::cerr << "Erreur de chargement de l'image Poisson12.bmp : " << SDL_GetError() << std::endl;
         texture = nullptr;
     }
 
@@ -88,7 +87,7 @@ void Poisson::applyBehaviors(const std::vector<Poisson>& poissons)
     }
 
     // Limiter la vitesse
-    float speedLimit = 2.5f;
+    float speedLimit = 3.0f;
     float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
     if (speed > speedLimit)
     {
@@ -101,13 +100,13 @@ SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons)
 {
     SDL_Point steering = {0, 0};
     int total = 0;
-    float perceptionRadius = 55.0f;
+    float perceptionRadius = 50.0f;
 
     for (const auto& other : poissons)
     {
         if (&other != this && other.groupId == groupId)
         {
-            float distance = std::sqrt(std::pow(position.x - other.position.x, 3) + std::pow(position.y - other.position.y, 3));
+            float distance = std::sqrt(std::pow(position.x - other.position.x, 4) + std::pow(position.y - other.position.y, 4));
             if (distance < perceptionRadius)
             {
                 steering.x += other.position.x;

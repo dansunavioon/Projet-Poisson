@@ -76,10 +76,9 @@ int SDL_main(int argc, char* argv[])
         return -1;
     }
 
-
     bool running = true;
     SDL_Event event;
-    const int cameraSpeed = 10;
+    const int cameraSpeed = 8;
 
     while (running)
     {
