@@ -43,7 +43,15 @@ int Fenetre::display(){
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 
-    SDL_SetRenderDrawColor(this->renderer, 0, 0, 150, 100);
+    // SDL_SetRenderDrawColor(this->renderer, 0, 0, 150, 100);
+
+    // Dessin du fond bleu avec un dégradé vertical
+    for (int y = 0; y < this->height; y++) {
+        int blueValue = 255 - (y * 255 / this->height); // Calcul d'un dégradé du bleu (du plus clair au plus foncé)
+        SDL_SetRenderDrawColor(this->renderer, 0, 0, blueValue, 255);
+        SDL_RenderDrawLine(this->renderer, 0, y, this->width, y);
+    }
+
     SDL_RenderClear(this->renderer);
     SDL_RenderPresent(this->renderer);
 
