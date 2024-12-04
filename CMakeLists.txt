@@ -8,7 +8,9 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # Ajouter les fichiers source et déclarer l'exécutable
-add_executable(Projet_Poisson main.cpp Poisson/Poisson.cpp)
+add_executable(Projet_Poisson main.cpp Poisson/Poisson.cpp
+        "Fenetre/Fenetre.h"
+        Personage/Personnage.cpp)
 
 # Lier SDL2 à l'exécutable Projet_Poisson
 target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES})
