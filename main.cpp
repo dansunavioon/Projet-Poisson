@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include "Poisson/Poisson.h"
+#include "Fenetre/Fenetre.h"
 #include <vector>
 #include <ctime>
 #include <iostream>
@@ -128,3 +129,16 @@ int SDL_main(int argc, char* argv[])
     SDL_Quit();
     return 0;
 }
+
+
+
+// Including custom class
+
+#include "Fenetre/Fenetre.h"
+
+
+
+    Fenetre* fenetre = new Fenetre(window, renderer, 600, 800);
+
+    fenetre->display();
+
