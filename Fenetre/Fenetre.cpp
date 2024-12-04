@@ -83,7 +83,6 @@ int Fenetre::display()
     srand(static_cast<unsigned int>(time(nullptr)));
 
     Personnage plongeur(renderer);
-
     std::vector<Poisson> poissons;
     int nombrePoissons = 200;
     for (int i = 0; i < nombrePoissons; ++i)
