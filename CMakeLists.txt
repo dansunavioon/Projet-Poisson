@@ -16,12 +16,12 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(Projet_Poisson main.cpp
         Poisson/Poisson.cpp
         Poisson/Poisson.h
-        Fenetre/Fenetre.cpp
-        Fenetre/Fenetre.h
         Personage/Personnage.cpp
         Personage/Personnage.h
         Personage/var_personnage.h
         Personage/var_personnage.cpp
+        Fenetre/Fenetre.cpp
+        Fenetre/Fenetre.h
 )
 
 # Inclure les fichiers d'en-tête SDL2

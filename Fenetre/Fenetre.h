@@ -2,24 +2,24 @@
 #define FENETRE_H
 
 #include <SDL.h>
+#include <string>
 
-class Fenetre {
+class Fenetre
+{
+public:
+    Fenetre(const std::string& titre, int largeur, int hauteur);
+    ~Fenetre();
 
-    private:
-        SDL_Window* window;
-        SDL_Renderer* renderer;
-        int height;
-        int width;
+    bool estValide() const;
+    SDL_Renderer* obtenirRenderer() const;
 
-    public:
-        Fenetre(SDL_Window* window, SDL_Renderer* renderer, int height, int width);
-        int display();
-        void updateCamera(const SDL_Rect& personnageRect); // Mise à jour de la camera
+    void effacer();
+    void afficher();
 
-
-
+private:
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+    bool valide;
 };
 
-
-
-#endif //FENETRE_H
+#endif // FENETRE_H
