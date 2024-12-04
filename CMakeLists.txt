@@ -1,16 +1,32 @@
-cmake_minimum_required(VERSION 3.20)
+# Lier SDL2 à l'exécutable Projet_Poisson
+target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES})
+
+
+
+cmake_minimum_required(VERSION 3.25)
 project(Projet_Poisson)
 
-set(CMAKE_CXX_STANDARD 17)
-
-# Trouver SDL2
+# Rechercher la bibliothèque SDL2
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
-# Ajouter les fichiers source et déclarer l'exécutable
-add_executable(Projet_Poisson main.cpp Poisson/Poisson.cpp
-        "Fenetre/Fenetre.h"
-        Personage/Personnage.cpp)
+set(CMAKE_CXX_STANDARD 17)
 
-# Lier SDL2 à l'exécutable Projet_Poisson
-target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES})
+# Ajouter les fichiers source et déclarer l'exécutable
+add_executable(Projet_Poisson main.cpp
+        Poisson/Poisson.cpp
+        Poisson/Poisson.h
+        Fenetre/Fenetre.cpp
+        Fenetre/Fenetre.h
+        Personage/Personnage.cpp
+        Personage/Personnage.h
+        Personage/var_personnage.h
+        Personage/var_personnage.cpp
+)
+
+# Inclure les fichiers d'en-tête SDL2
+target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})
+
+# Lier la bibliothèque SDL2 à votre exécutable
+target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES})
+
