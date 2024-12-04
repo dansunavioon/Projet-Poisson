@@ -1,8 +1,10 @@
 #include "Fenetre.h"
 #include "../Personage/Personnage.h"
 #include "../Poisson/Poisson.h"
-#include "../Personage/var_personnage.h"
+#include <SDL_mixer.h>
 
+
+Mix_Music* backgroundMusic = nullptr;
 
 /**
  * Constructeur
@@ -19,6 +21,50 @@ Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, c
     this->width = width;
     // Initialisation de la caméra
     camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+
+    // Initialisation du son
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        SDL_Log("Erreur : Impossible d'initialiser SDL_mixer : %s", Mix_GetError());
+    }
+
+    // Chargement de la musique de fond
+    Mix_Music* backgroundMusic = Mix_LoadMUS("assets/music.ogg");
+    if (!backgroundMusic) {
+        SDL_Log("Erreur : Impossible de charger la musique : %s", Mix_GetError());
+    }
+
+    // Lecture de la musique en boucle
+    Mix_PlayMusic(backgroundMusic, -1);
+}
+
+void Fenetre::openSettingsWindow() {
+    SDL_Window* settingsWindow = SDL_CreateWindow("Paramètres", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 300, SDL_WINDOW_SHOWN);
+    SDL_Renderer* settingsRenderer = SDL_CreateRenderer(settingsWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    bool isSettingsOpen = true;
+    SDL_Event settingsEvent;
+
+    while (isSettingsOpen) {
+        while (SDL_PollEvent(&settingsEvent)) {
+            if (settingsEvent.type == SDL_QUIT || (settingsEvent.type == SDL_KEYDOWN && settingsEvent.key.keysym.sym == SDLK_ESCAPE)) {
+                isSettingsOpen = false;
+            }
+
+            if (settingsEvent.type == SDL_KEYDOWN && settingsEvent.key.keysym.sym == SDLK_UP) {
+                Mix_VolumeMusic(MIX_MAX_VOLUME); // Volume maximum
+            }
+            if (settingsEvent.type == SDL_KEYDOWN && settingsEvent.key.keysym.sym == SDLK_DOWN) {
+                Mix_VolumeMusic(0); // Couper le son
+            }
+        }
+
+        SDL_SetRenderDrawColor(settingsRenderer, 200, 200, 200, 255);
+        SDL_RenderClear(settingsRenderer);
+        SDL_RenderPresent(settingsRenderer);
+    }
+
+    SDL_DestroyRenderer(settingsRenderer);
+    SDL_DestroyWindow(settingsWindow);
 }
 
 void Fenetre::updateCamera(const SDL_Rect& personnageRect) {
@@ -141,11 +187,30 @@ int Fenetre::display(){
             poisson.draw(renderer);
         }
 
+        // Dessiner le bouton des paramètres
+        SDL_SetRenderDrawColor(renderer, 100, 100, 255, 255); // Couleur du bouton (bleu)
+        SDL_Rect settingsButton = { 10, 10, 100, 40 }; // Position et taille du bouton
+        SDL_RenderFillRect(renderer, &settingsButton);
+
+        // Gestion des événements pour le clic sur le bouton
+        if (events.type == SDL_MOUSEBUTTONDOWN) {
+            int mouseX = events.button.x;
+            int mouseY = events.button.y;
+
+            if (mouseX >= settingsButton.x && mouseX <= (settingsButton.x + settingsButton.w) &&
+                mouseY >= settingsButton.y && mouseY <= (settingsButton.y + settingsButton.h)) {
+
+                openSettingsWindow(); // Fonction pour gérer les paramètres
+            }
+        }
+
         // Afficher le rendu à l'écran
         SDL_RenderPresent(renderer);
     }
 
     // Quitter proprement
+    Mix_FreeMusic(backgroundMusic);
+    Mix_CloseAudio();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

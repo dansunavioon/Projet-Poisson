@@ -23,6 +23,11 @@ const int JAUGE_X = SCREEN_WIDTH - 20 - JAUGE_WIDTH;  // Position X de la jauge 
 const int JAUGE_HEIGHT = SCREEN_HEIGHT - 40; // Hauteur de la jauge (adaptée à l'écran)
 const int MARGE_Y = 20;       // Marge supérieure et inférieure
 
+// Position et dimensions du bouton Paramètres
+const int BUTTON_X = 10;
+const int BUTTON_Y = 10;
+const int BUTTON_WIDTH = 100;
+const int BUTTON_HEIGHT = 40;
 
 // La structure d'événements
 extern SDL_Event event;
