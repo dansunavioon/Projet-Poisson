@@ -1,6 +1,7 @@
 #include "Fenetre.h"
 #include "../Personage/Personnage.h"
 #include "../Poisson/Poisson.h"
+#include "../Personage/var_personnage.h"
 #include <SDL_mixer.h>
 
 
@@ -103,15 +104,7 @@ int Fenetre::display(){
     // Créer un objet Personnage avec le renderer
     Personnage plongeur(renderer);
 
-    // Création des poissons avec des positions de départ aléatoires
-    std::vector<Poisson> poissons;
-    int nombrePoissons = 600; // Nombre de poissons
-    for (int i = 0; i < nombrePoissons; ++i)
-    {
-        float randomX = static_cast<float>(rand() % 800); // Position X aléatoire
-        float randomY = static_cast<float>(rand() % 600); // Position Y aléatoire
-        poissons.emplace_back(randomX, randomY);
-    }
+
 
     SDL_Event events;
 
@@ -142,11 +135,6 @@ int Fenetre::display(){
         if (currentTime - animationTimer >= animationDelay) {
             plongeur.update(); // Mettre à jour l'animation
             animationTimer = currentTime; // Réinitialiser le timer
-        }
-
-        // Mise à jour des poissons
-        for (auto& poisson : poissons) {
-            poisson.update(poissons);
         }
 
         // Mettre à jour la caméra en fonction de la position du personnage
@@ -182,11 +170,6 @@ int Fenetre::display(){
         // Rendre le personnage à sa nouvelle position
         plongeur.render();
 
-        // Dessine les poissons
-        for (const auto& poisson : poissons)
-        {
-            poisson.draw(renderer);
-        }
 /*
         // Dessiner le bouton des paramètres
         SDL_SetRenderDrawColor(renderer, 100, 100, 255, 255); // Couleur du bouton (bleu)

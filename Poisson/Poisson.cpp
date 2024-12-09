@@ -1,5 +1,4 @@
-#include "Poisson.h"
-#include <cmath>
+/*
 #include "Poisson.h"
 #include <cmath>
 #include <cstdlib>
@@ -155,3 +154,4 @@ SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons)
 
     return steering;
 }
+ */
