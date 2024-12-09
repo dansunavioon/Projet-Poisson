@@ -1,10 +1,13 @@
 #include "Fenetre.h"
+
+#include "../Algue/Algue.h"
 #include "../Personage/Personnage.h"
 #include "../Poisson/Poisson.h"
-#include <SDL_mixer.h>
+#include "../Roche/Roche.h"
+//#include <SDL_mixer.h>
 
 
-Mix_Music* backgroundMusic = nullptr;
+//Mix_Music* backgroundMusic = nullptr;
 
 /**
  * Constructeur
@@ -23,7 +26,7 @@ Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, c
     camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
     // Initialisation du son
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    /*if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         SDL_Log("Erreur : Impossible d'initialiser SDL_mixer : %s", Mix_GetError());
     }
 
@@ -34,7 +37,7 @@ Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, c
     }
 
     // Lecture de la musique en boucle
-    Mix_PlayMusic(backgroundMusic, -1);
+    Mix_PlayMusic(backgroundMusic, -1);*/
 }
 /*
 void Fenetre::openSettingsWindow() {
@@ -80,14 +83,47 @@ void Fenetre::updateCamera(const SDL_Rect& personnageRect) {
     if (camera.y > MAP_HEIGHT - camera.h) camera.y = MAP_HEIGHT - camera.h;
 }
 
+int displayRocheAlgue(SDL_Renderer * renderer, int width, int height) {
+    // Dessin des petits rectangles en bas pour représenter des obstacles
+    int numObstacles = 10; // Nombre d'obstacles
+    int numAlgues = 20;
+    int minWidth = 50, maxWidth = 150; // Largeur minimale et maximale des obstacles
+    int minHeight = 10, maxHeight = 75;
+
+    SDL_SetRenderDrawColor(renderer, 139, 69, 19, 255); // Couleur marron pour les obstacles (RVB: brun)
+
+    for (int i = 0; i < numObstacles; i++) {
+        // Taille aléatoire des obstacles
+        int obstacleWidth = minWidth + rand() % (maxWidth - minWidth);
+        int obstacleHeight = minHeight + rand() % (maxHeight - minHeight);
+        int xPosition = rand() % (width - obstacleWidth); // Position horizontale aléatoire
+
+        // Calcul de la position du bas de l'écran
+        new Roche(renderer, obstacleHeight, obstacleWidth, xPosition, height - obstacleHeight);
+    }
+
+    for (int i = 0; i < numAlgues; i++) {
+        // Taille aléatoire des obstacles
+        int obstacleWidth = 50;
+        int obstacleHeight = 50;
+        int xPosition = rand() % (width - obstacleWidth); // Position horizontale aléatoire
+
+        // Calcul de la position du bas de l'écran
+        new Algue(renderer, obstacleHeight, obstacleWidth, xPosition, height - obstacleHeight);
+    }
+}
+
 int Fenetre::display(){
 
     // Initialisation
     SDL_Init(SDL_INIT_EVERYTHING);
 
 
-    this->window = SDL_CreateWindow("Poisson", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->width, this->height, SDL_WINDOW_SHOWN);
-    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!this->window)
+        this->window = SDL_CreateWindow("Poisson", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->width, this->height, SDL_WINDOW_SHOWN);
+
+    if (!this->renderer)
+        this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 
     // Dessin du fond bleu avec un dégradé vertical
@@ -96,6 +132,8 @@ int Fenetre::display(){
         SDL_SetRenderDrawColor(this->renderer, 0, 0, blueValue, 255);
         SDL_RenderDrawLine(this->renderer, 0, y, this->width, y);
     }
+
+    displayRocheAlgue(this->renderer, this->width, this->height);
 
     SDL_RenderClear(this->renderer);
     SDL_RenderPresent(this->renderer);
@@ -164,6 +202,8 @@ int Fenetre::display(){
             SDL_RenderDrawLine(renderer, 0, y, camera.w, y);
         }
 
+        displayRocheAlgue(this->renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
+
         // Dessiner la jauge de profondeur sur le côté droit
         SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255); // Couleur de fond de la jauge (gris clair)
         SDL_Rect gaugeBackground = { JAUGE_X, MARGE_Y, JAUGE_WIDTH, JAUGE_HEIGHT };
@@ -211,8 +251,8 @@ int Fenetre::display(){
     }
 
     // Quitter proprement
-    Mix_FreeMusic(backgroundMusic);
-    Mix_CloseAudio();
+    /*Mix_FreeMusic(backgroundMusic);
+    Mix_CloseAudio();*/
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
