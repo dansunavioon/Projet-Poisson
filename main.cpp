@@ -1,4 +1,5 @@
-#include "Fenetre/Fenetre.h"
+#include "Camera/Camera.h"
+#include "Map/Map.h"
 
 int main(int argc, char* argv[]) {
     SDL_Window* window = nullptr;
@@ -6,9 +7,9 @@ int main(int argc, char* argv[]) {
 
     // Créer et afficher une fenêtre
 
-    Fenetre* fenetre = new Fenetre(window, renderer, 600, 800);
+    Map* map = new Map(window, renderer, MAP_HEIGHT, MAP_WIDTH);
 
-    fenetre->display();
+    map->generer();
 
     return 0;
 }

@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <iostream>
 #include "var_personnage.h"
+#include "../TypeDef.h"
+#include "../Camera/Camera.h"
 
 enum Direction {
     DROITE,
@@ -13,35 +15,37 @@ enum Direction {
 };
 
 class Personnage {
-    private:
-        SDL_Texture* spriteDroite;  // Feuille de sprites pour aller à droite
-        SDL_Texture* spriteGauche;  // Feuille de sprites pour aller à gauche
-        SDL_Texture* spriteHaut;    // Feuille de sprites pour aller en haut
-        SDL_Texture* spriteBas;     // Feuille de sprites pour aller en bas
-        SDL_Renderer* renderer;
 
-        int x, y;                 // Position du personnage
-        int currentFrame;         // Frame actuelle de l'animation
-        Direction currentDirection;  // Direction actuelle
+    SDL_Texture* spriteDroite;  // Feuille de sprites pour aller à droite
+    SDL_Texture* spriteGauche;  // Feuille de sprites pour aller à gauche
+    SDL_Texture* spriteHaut;    // Feuille de sprites pour aller en haut
+    SDL_Texture* spriteBas;     // Feuille de sprites pour aller en bas
+    SDL_Renderer* renderer;
 
-        void setClips();          // Initialiser les clips de sprites
+    int x, y;                 // Position du personnage
+    int currentFrame;         // Frame actuelle de l'animation
+    Direction currentDirection;  // Direction actuelle
 
-public:
-    Personnage(SDL_Renderer* renderer);
-    ~Personnage();
+    Camera* camera;            // Caméra pour suivre le personnage
 
-    // Gérer les mouvements
-    void handleInput(SDL_Event& monevent);
+    void setClips();          // Initialiser les clips de sprites
 
-    // Mettre à jour le personnage
-    void update();
+    public:
+        Personnage(SDL_Renderer* renderer, Camera* camera);
+        ~Personnage();
 
-    // Afficher le personnage
-    void render();
+        // Gérer les mouvements
+        void handleInput(SDL_Event& monevent);
 
-    // Accéder à la position pour la caméra
-    int getX() const { return x; }
-    int getY() const { return y; }
+        // Mettre à jour le personnage
+        void update();
+
+        // Afficher le personnage
+        void render();
+
+        // Accéder à la position pour la caméra
+        int getX() const { return x; }
+        int getY() const { return y; }
 };
 
 

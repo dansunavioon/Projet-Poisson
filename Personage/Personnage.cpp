@@ -1,6 +1,6 @@
 #include "Personnage.h"
 
-Personnage::Personnage(SDL_Renderer* renderer) : renderer(renderer), x(100), y(100), currentFrame(0), currentDirection(DROITE) {
+Personnage::Personnage(SDL_Renderer* renderer, Camera* camera) : renderer(renderer), camera(camera), x(100), y(100), currentFrame(0), currentDirection(DROITE) {
     // Calculer la position initiale du plongeur au centre de la carte
     x = (MAP_WIDTH / 2) - (TAILLE_PLONGEUR / 2); // Centrer horizontalement
     y = (MAP_HEIGHT / 2) - (TAILLE_PLONGEUR / 2); // Centrer verticalement
@@ -143,7 +143,7 @@ void Personnage::render() {
             break;
     }
 
-    SDL_Rect renderQuad = {x - camera.x, y - camera.y, WIDTH_QUAD, HEIGHT_QUAD};
+    SDL_Rect renderQuad = {x - this->camera->getX(), y - this->camera->getY(), WIDTH_QUAD, HEIGHT_QUAD};
     SDL_RenderCopy(renderer, currentSprite, currentClip, &renderQuad);
     /*
     std::cout << "renderQuad: x=" << renderQuad.x << " y=" << renderQuad.y

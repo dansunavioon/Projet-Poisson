@@ -1,7 +1,7 @@
 #ifndef TYPEDEF_H
 #define TYPEDEF_H
 
-const int MAP_HEIGHT = 500;
-const int MAP_WIDTH = 1000;
+const int MAP_WIDTH = 800;  // Largeur de la carte
+const int MAP_HEIGHT = 800; // Hauteur de la carte
 
 #endif //TYPEDEF_H

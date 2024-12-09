@@ -13,8 +13,8 @@ add_executable(Projet_Poisson
         main.cpp
         Poisson/Poisson.cpp
         Poisson/Poisson.h
-        Fenetre/Fenetre.cpp
-        Fenetre/Fenetre.h
+        Camera/Camera.cpp
+        Camera/Camera.h
         Personage/Personnage.cpp
         Personage/Personnage.h
         Personage/var_personnage.h
