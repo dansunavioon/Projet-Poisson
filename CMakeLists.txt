@@ -11,7 +11,9 @@ add_executable(Projet_Poisson main.cpp
         Map/Map.h
         typeDef.h
         Roche/Roche.cpp
-        Roche/Roche.h)
+        Roche/Roche.h
+        Algue/Algue.cpp
+        Algue/Algue.h)
 
 # Inclure les fichiers d'en-tête SDL2
 target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})

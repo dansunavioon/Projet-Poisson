@@ -1,5 +1,7 @@
 #include "Map.h"
 #include <cstdlib>
+
+#include "../Algue/Algue.h"
 #include "../Roche/Roche.h"
 
 Map::Map(SDL_Window* window, SDL_Renderer* renderer, const int height, const int width)
@@ -37,6 +39,7 @@ int Map::display()
 
     // Dessin des petits rectangles en bas pour représenter des obstacles
     int numObstacles = 10; // Nombre d'obstacles
+    int numAlgues = 20;
     int minWidth = 50, maxWidth = 150; // Largeur minimale et maximale des obstacles
     int minHeight = 10, maxHeight = 75;
 
@@ -51,6 +54,18 @@ int Map::display()
         // Calcul de la position du bas de l'écran
         new Roche(this->renderer, obstacleHeight, obstacleWidth, xPosition, this->height - obstacleHeight);
     }
+
+    for (int i = 0; i < numAlgues; i++) {
+        // Taille aléatoire des obstacles
+        int obstacleWidth = 50;
+        int obstacleHeight = 50;
+        int xPosition = rand() % (this->width - obstacleWidth); // Position horizontale aléatoire
+
+        // Calcul de la position du bas de l'écran
+        new Algue(this->renderer, obstacleHeight, obstacleWidth, xPosition, this->height - obstacleHeight);
+    }
+
+
 
     // Mise à jour de l'affichage
     SDL_RenderPresent(this->renderer);
