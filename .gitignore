@@ -2,4 +2,5 @@ CMakeLists.txt
 cmake-build-debug/*
 !cmake-build-debug/image_perso
 !cmake-build-debug/image_map
+!cmake-build-debug/son_map
 .idea

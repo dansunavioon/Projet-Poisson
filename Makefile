@@ -129,6 +129,30 @@ Projet_Poisson/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/build
 .PHONY : Projet_Poisson/fast
 
+Fenetre/Fenetre.o: Fenetre/Fenetre.cpp.o
+.PHONY : Fenetre/Fenetre.o
+
+# target to build an object file
+Fenetre/Fenetre.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o
+.PHONY : Fenetre/Fenetre.cpp.o
+
+Fenetre/Fenetre.i: Fenetre/Fenetre.cpp.i
+.PHONY : Fenetre/Fenetre.i
+
+# target to preprocess a source file
+Fenetre/Fenetre.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.i
+.PHONY : Fenetre/Fenetre.cpp.i
+
+Fenetre/Fenetre.s: Fenetre/Fenetre.cpp.s
+.PHONY : Fenetre/Fenetre.s
+
+# target to generate assembly for a file
+Fenetre/Fenetre.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.s
+.PHONY : Fenetre/Fenetre.cpp.s
+
 Personage/Personnage.o: Personage/Personnage.cpp.o
 .PHONY : Personage/Personnage.o
 
@@ -177,29 +201,29 @@ Personage/var_personnage.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/Personage/var_personnage.cpp.s
 .PHONY : Personage/var_personnage.cpp.s
 
-fenetre/fenetre.o: fenetre/fenetre.cpp.o
-.PHONY : fenetre/fenetre.o
+Poisson/Poisson.o: Poisson/Poisson.cpp.o
+.PHONY : Poisson/Poisson.o
 
 # target to build an object file
-fenetre/fenetre.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o
-.PHONY : fenetre/fenetre.cpp.o
+Poisson/Poisson.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o
+.PHONY : Poisson/Poisson.cpp.o
 
-fenetre/fenetre.i: fenetre/fenetre.cpp.i
-.PHONY : fenetre/fenetre.i
+Poisson/Poisson.i: Poisson/Poisson.cpp.i
+.PHONY : Poisson/Poisson.i
 
 # target to preprocess a source file
-fenetre/fenetre.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.i
-.PHONY : fenetre/fenetre.cpp.i
+Poisson/Poisson.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.i
+.PHONY : Poisson/Poisson.cpp.i
 
-fenetre/fenetre.s: fenetre/fenetre.cpp.s
-.PHONY : fenetre/fenetre.s
+Poisson/Poisson.s: Poisson/Poisson.cpp.s
+.PHONY : Poisson/Poisson.s
 
 # target to generate assembly for a file
-fenetre/fenetre.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.s
-.PHONY : fenetre/fenetre.cpp.s
+Poisson/Poisson.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.s
+.PHONY : Poisson/Poisson.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -225,30 +249,6 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-poisson/poisson.o: poisson/poisson.cpp.o
-.PHONY : poisson/poisson.o
-
-# target to build an object file
-poisson/poisson.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o
-.PHONY : poisson/poisson.cpp.o
-
-poisson/poisson.i: poisson/poisson.cpp.i
-.PHONY : poisson/poisson.i
-
-# target to preprocess a source file
-poisson/poisson.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.i
-.PHONY : poisson/poisson.cpp.i
-
-poisson/poisson.s: poisson/poisson.cpp.s
-.PHONY : poisson/poisson.s
-
-# target to generate assembly for a file
-poisson/poisson.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Projet_Poisson.dir/build.make CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.s
-.PHONY : poisson/poisson.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -258,21 +258,21 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Projet_Poisson"
+	@echo "... Fenetre/Fenetre.o"
+	@echo "... Fenetre/Fenetre.i"
+	@echo "... Fenetre/Fenetre.s"
 	@echo "... Personage/Personnage.o"
 	@echo "... Personage/Personnage.i"
 	@echo "... Personage/Personnage.s"
 	@echo "... Personage/var_personnage.o"
 	@echo "... Personage/var_personnage.i"
 	@echo "... Personage/var_personnage.s"
-	@echo "... fenetre/fenetre.o"
-	@echo "... fenetre/fenetre.i"
-	@echo "... fenetre/fenetre.s"
+	@echo "... Poisson/Poisson.o"
+	@echo "... Poisson/Poisson.i"
+	@echo "... Poisson/Poisson.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... poisson/poisson.o"
-	@echo "... poisson/poisson.i"
-	@echo "... poisson/poisson.s"
 .PHONY : help
 
 

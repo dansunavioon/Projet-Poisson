@@ -83,33 +83,33 @@ CMakeFiles/Projet_Poisson.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Projet_Poisson.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/main.cpp" -o CMakeFiles/Projet_Poisson.dir/main.cpp.s
 
-CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o: CMakeFiles/Projet_Poisson.dir/flags.make
-CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o: poisson/poisson.cpp
-CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o: CMakeFiles/Projet_Poisson.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o -MF CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o.d -o CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o -c "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/poisson/poisson.cpp"
+CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o: CMakeFiles/Projet_Poisson.dir/flags.make
+CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o: Poisson/Poisson.cpp
+CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o: CMakeFiles/Projet_Poisson.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o -MF CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o.d -o CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o -c "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/Poisson/Poisson.cpp"
 
-CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/poisson/poisson.cpp" > CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.i
+CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/Poisson/Poisson.cpp" > CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.i
 
-CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/poisson/poisson.cpp" -o CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.s
+CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/Poisson/Poisson.cpp" -o CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.s
 
-CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o: CMakeFiles/Projet_Poisson.dir/flags.make
-CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o: fenetre/fenetre.cpp
-CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o: CMakeFiles/Projet_Poisson.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o -MF CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o.d -o CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o -c "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/fenetre/fenetre.cpp"
+CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o: CMakeFiles/Projet_Poisson.dir/flags.make
+CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o: Fenetre/Fenetre.cpp
+CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o: CMakeFiles/Projet_Poisson.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o -MF CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o.d -o CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o -c "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/Fenetre/Fenetre.cpp"
 
-CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/fenetre/fenetre.cpp" > CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.i
+CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/Fenetre/Fenetre.cpp" > CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.i
 
-CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/fenetre/fenetre.cpp" -o CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.s
+CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/Fenetre/Fenetre.cpp" -o CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.s
 
 CMakeFiles/Projet_Poisson.dir/Personage/Personnage.cpp.o: CMakeFiles/Projet_Poisson.dir/flags.make
 CMakeFiles/Projet_Poisson.dir/Personage/Personnage.cpp.o: Personage/Personnage.cpp
@@ -142,8 +142,8 @@ CMakeFiles/Projet_Poisson.dir/Personage/var_personnage.cpp.s: cmake_force
 # Object files for target Projet_Poisson
 Projet_Poisson_OBJECTS = \
 "CMakeFiles/Projet_Poisson.dir/main.cpp.o" \
-"CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o" \
-"CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o" \
+"CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o" \
+"CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o" \
 "CMakeFiles/Projet_Poisson.dir/Personage/Personnage.cpp.o" \
 "CMakeFiles/Projet_Poisson.dir/Personage/var_personnage.cpp.o"
 
@@ -151,12 +151,13 @@ Projet_Poisson_OBJECTS = \
 Projet_Poisson_EXTERNAL_OBJECTS =
 
 Projet_Poisson: CMakeFiles/Projet_Poisson.dir/main.cpp.o
-Projet_Poisson: CMakeFiles/Projet_Poisson.dir/poisson/poisson.cpp.o
-Projet_Poisson: CMakeFiles/Projet_Poisson.dir/fenetre/fenetre.cpp.o
+Projet_Poisson: CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o
+Projet_Poisson: CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o
 Projet_Poisson: CMakeFiles/Projet_Poisson.dir/Personage/Personnage.cpp.o
 Projet_Poisson: CMakeFiles/Projet_Poisson.dir/Personage/var_personnage.cpp.o
 Projet_Poisson: CMakeFiles/Projet_Poisson.dir/build.make
 Projet_Poisson: /usr/lib/x86_64-linux-gnu/libSDL2.so
+Projet_Poisson: /usr/lib/x86_64-linux-gnu/libSDL2_mixer.so
 Projet_Poisson: CMakeFiles/Projet_Poisson.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/mnt/c/Users/damra/OneDrive/Bureau/Projet Poisson/Projet-Poisson/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable Projet_Poisson"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Projet_Poisson.dir/link.txt --verbose=$(VERBOSE)

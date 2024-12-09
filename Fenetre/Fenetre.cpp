@@ -28,7 +28,7 @@ Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, c
     }
 
     // Chargement de la musique de fond
-    Mix_Music* backgroundMusic = Mix_LoadMUS("assets/music.ogg");
+    Mix_Music* backgroundMusic = Mix_LoadMUS("son_map/fond_poisson.mp3");
     if (!backgroundMusic) {
         SDL_Log("Erreur : Impossible de charger la musique : %s", Mix_GetError());
     }
@@ -36,7 +36,7 @@ Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, c
     // Lecture de la musique en boucle
     Mix_PlayMusic(backgroundMusic, -1);
 }
-
+/*
 void Fenetre::openSettingsWindow() {
     SDL_Window* settingsWindow = SDL_CreateWindow("Paramètres", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 300, SDL_WINDOW_SHOWN);
     SDL_Renderer* settingsRenderer = SDL_CreateRenderer(settingsWindow, -1, SDL_RENDERER_ACCELERATED);
@@ -66,6 +66,7 @@ void Fenetre::openSettingsWindow() {
     SDL_DestroyRenderer(settingsRenderer);
     SDL_DestroyWindow(settingsWindow);
 }
+*/
 
 void Fenetre::updateCamera(const SDL_Rect& personnageRect) {
     // Centrer la caméra sur le personnage
@@ -186,7 +187,7 @@ int Fenetre::display(){
         {
             poisson.draw(renderer);
         }
-
+/*
         // Dessiner le bouton des paramètres
         SDL_SetRenderDrawColor(renderer, 100, 100, 255, 255); // Couleur du bouton (bleu)
         SDL_Rect settingsButton = { 10, 10, 100, 40 }; // Position et taille du bouton
@@ -203,6 +204,7 @@ int Fenetre::display(){
                 openSettingsWindow(); // Fonction pour gérer les paramètres
             }
         }
+        */
 
         // Afficher le rendu à l'écran
         SDL_RenderPresent(renderer);

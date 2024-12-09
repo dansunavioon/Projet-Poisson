@@ -21,8 +21,5 @@ add_executable(Projet_Poisson
         Personage/var_personnage.cpp
 )
 
-# Inclure les répertoires d'en-tête pour SDL2 et SDL2_mixer
-target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_MIXER_INCLUDE_DIRS})
-
 # Lier SDL2 et SDL2_mixer à l'exécutable
-target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
+target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES} SDL2_mixer::SDL2_mixer)
