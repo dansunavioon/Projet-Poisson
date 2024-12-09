@@ -11,10 +11,10 @@ set(CMAKE_CXX_STANDARD 17)
 # Ajouter les fichiers source
 add_executable(Projet_Poisson
         main.cpp
-        poisson/poisson.cpp
-        poisson/poisson.h
-        fenetre/fenetre.cpp
-        fenetre/fenetre.h
+        Poisson/Poisson.cpp
+        Poisson/Poisson.h
+        Fenetre/Fenetre.cpp
+        Fenetre/Fenetre.h
         Personage/Personnage.cpp
         Personage/Personnage.h
         Personage/var_personnage.h
