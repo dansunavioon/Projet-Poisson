@@ -1,48 +1,30 @@
-#ifndef PROJET_POISSON_PERSONNAGE_H
-#define PROJET_POISSON_PERSONNAGE_H
+#ifndef PERSONNAGE_H
+#define PERSONNAGE_H
 
 #include <SDL.h>
-#include <iostream>
-#include "var_personnage.h"
+#include <SDL_image.h>
 
 enum Direction {
-    DROITE,
-    GAUCHE,
-    HAUT,
-    BAS
+    GAUCHE, DROITE, HAUT, BAS
 };
 
 class Personnage {
-    private:
-        SDL_Texture* spriteDroite;  // Feuille de sprites pour aller à droite
-        SDL_Texture* spriteGauche;  // Feuille de sprites pour aller à gauche
-        SDL_Texture* spriteHaut;    // Feuille de sprites pour aller en haut
-        SDL_Texture* spriteBas;     // Feuille de sprites pour aller en bas
-        SDL_Renderer* renderer;
+private:
+    SDL_Texture* spriteDroite;
+    SDL_Texture* spriteGauche;
+    SDL_Texture* spriteHaut;
+    SDL_Texture* spriteBas;
+    SDL_Renderer* renderer;
 
-        int x, y;                 // Position du personnage
-        int currentFrame;         // Frame actuelle de l'animation
-        Direction currentDirection;  // Direction actuelle
-
-        void setClips();          // Initialiser les clips de sprites
+    int x, y;
+    int currentFrame;
+    Direction currentDirection;
 
 public:
     Personnage(SDL_Renderer* renderer);
     ~Personnage();
-
-    // Gérer les mouvements
-    void handleInput(SDL_Event& monevent);
-
-    // Mettre à jour le personnage
-    void update();
-
-    // Afficher le personnage
-    void render();
-
-    // Accéder à la position pour la caméra
-    int getX() const { return x; }
-    int getY() const { return y; }
+    void handleInput(SDL_Event& e);
+    void render(SDL_Renderer* renderer, SDL_Rect camera);
 };
 
-
-#endif //PROJET_POISSON_PERSONNAGE_H
+#endif

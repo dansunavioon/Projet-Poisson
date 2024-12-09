@@ -1,30 +1,24 @@
 #ifndef POISSON_H
 #define POISSON_H
+
 #include <SDL.h>
 #include <vector>
 
-class Poisson
-{
+class Poisson {
 public:
-    Poisson(SDL_Renderer* renderer, float x, float y, bool independent);
+    Poisson(SDL_Renderer* renderer, float x, float y);
     ~Poisson();
-    void update(const std::vector<Poisson>& poissons);
-    void draw(SDL_Renderer* renderer) const;
+
+    void draw(SDL_Renderer* renderer, SDL_Rect camera);
+    void update(std::vector<Poisson>& poissons);
+
+    float getX() const { return x; }
+    float getY() const { return y; }
 
 private:
-    SDL_Renderer* renderer;
     SDL_Texture* texture;
-    SDL_Point position;
-    SDL_Point velocity;
-    double angle; // Angle de rotation en degrés
-    bool independent;
-    int groupId;
-
-    void applyBehaviors(const std::vector<Poisson>& poissons);
-    SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
-    SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
-
-    static const int MAX_GROUPS = 10;
+    SDL_Renderer* renderer;
+    float x, y;
 };
 
-#endif // POISSON_H
+#endif

@@ -1,152 +1,32 @@
 #include "Poisson.h"
-#include <cmath>
+#include <SDL_image.h>
 #include <cstdlib>
-#include <iostream>
+#include <ctime>
 
-Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): renderer(renderer), independent(independent), angle(0.0)
-{
-    position.x = static_cast<int>(x);
-    position.y = static_cast<int>(y);
-    velocity.x = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
-    velocity.y = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
-
-    SDL_Surface* tempSurface = SDL_LoadBMP("Image_Poisson/Poisson12.bmp");
-    if (tempSurface)
-    {
-        texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-        SDL_FreeSurface(tempSurface);
-        if (!texture)
-        {
-            std::cerr << "Erreur de création de la texture : " << SDL_GetError() << std::endl;
-        }
-    }
-    else
-    {
-        std::cerr << "Erreur de chargement de l'image poisson.bmp : " << SDL_GetError() << std::endl;
-        texture = nullptr;
-    }
-
-    groupId = rand() % MAX_GROUPS;
+Poisson::Poisson(SDL_Renderer* renderer, float x, float y)
+    : renderer(renderer), x(x), y(y) {
+    texture = IMG_LoadTexture(renderer, "images/poisson.png");
 }
 
-Poisson::~Poisson()
-{
-    SDL_DestroyTexture(texture);
+Poisson::~Poisson() {
+    if (texture) SDL_DestroyTexture(texture);
 }
 
-void Poisson::update(const std::vector<Poisson>& poissons)
-{
-    applyBehaviors(poissons);
+void Poisson::update(std::vector<Poisson>& poissons) {
+    x += (rand() % 3 - 1);  // Simulation de mouvement aléatoire
+    y += (rand() % 3 - 1);
 
-    position.x += velocity.x;
-    position.y += velocity.y;
-
-    angle = std::atan2(velocity.y, velocity.x) * 180 / M_PI;
-
-    if (position.x > 800) position.x = 0;
-    else if (position.x < 0) position.x = 800;
-
-    if (position.y > 600) position.y = 0;
-    else if (position.y < 0) position.y = 600;
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
 }
 
-void Poisson::draw(SDL_Renderer* renderer) const
-{
-    if (texture)
-    {
-        SDL_Rect renderQuad = {position.x, position.y, 32, 32}; // Ajustez la taille de l'image si nécessaire
-        SDL_Point center = {16, 16}; // Point central pour la rotation
-
-        // Déterminer si l'image doit être retournée horizontalement
-        SDL_RendererFlip flip = SDL_FLIP_NONE;
-
-        // Retourner l'image si la vélocité x est négative (le poisson va vers la gauche)
-        if (velocity.x < 0)
-        {
-            flip = SDL_FLIP_HORIZONTAL; // Retourner l'image horizontalement
-            flip = SDL_FLIP_VERTICAL;
-        }
-        // Dessiner l'image avec l'angle de rotation et l'éventuel retournement
-        SDL_RenderCopyEx(renderer, texture, nullptr, &renderQuad, angle, &center, flip);
-    }
+void Poisson::draw(SDL_Renderer* renderer, SDL_Rect camera) {
+    SDL_Rect destRect = {static_cast<int>(x) - camera.x, static_cast<int>(y) - camera.y, 30, 30};
+    SDL_RenderCopy(renderer, texture, nullptr, &destRect);
 }
 
-void Poisson::applyBehaviors(const std::vector<Poisson>& poissons)
-{
-    if (!independent)
-    {
-        SDL_Point cohesion = cohesionBehavior(poissons);
-        SDL_Point separation = separationBehavior(poissons);
 
-        velocity.x += cohesion.x + separation.x;
-        velocity.y += cohesion.y + separation.y;
-    }
-
-    float speedLimit = 3.0f;
-    float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
-    if (speed > speedLimit)
-    {
-        velocity.x = (velocity.x / speed) * speedLimit;
-        velocity.y = (velocity.y / speed) * speedLimit;
-    }
-}
-
-SDL_Point Poisson::cohesionBehavior(const std::vector<Poisson>& poissons)
-{
-    SDL_Point steering = {0, 0};
-    int total = 0;
-    float perceptionRadius = 50.0f;
-
-    for (const auto& other : poissons)
-    {
-        if (&other != this && other.groupId == groupId)
-        {
-            float distance = std::sqrt(std::pow(position.x - other.position.x, 2) +
-                                       std::pow(position.y - other.position.y, 2));
-            if (distance < perceptionRadius)
-            {
-                steering.x += other.position.x;
-                steering.y += other.position.y;
-                total++;
-            }
-        }
-    }
-
-    if (total > 0)
-    {
-        steering.x /= total;
-        steering.y /= total;
-
-        steering.x -= position.x;
-        steering.y -= position.y;
-    }
-
-    return steering;
-}
-
-SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons)
-{
-    SDL_Point steering = {0, 0};
-    int total = 0;
-    float perceptionRadius = 30.0f;
-
-    for (const auto& other : poissons)
-    {
-        float distance = std::sqrt(std::pow(position.x - other.position.x, 2) +
-                                   std::pow(position.y - other.position.y, 2));
-        if (&other != this && distance < perceptionRadius)
-        {
-            steering.x += position.x - other.position.x;
-            steering.y += position.y - other.position.y;
-            total++;
-        }
-    }
-
-    if (total > 0)
-    {
-        steering.x /= total;
-        steering.y /= total;
-    }
-
-    return steering;
+void Poisson::draw(SDL_Renderer* renderer, const SDL_Rect& camera) const {
+    SDL_Rect dest = {rect.x - camera.x, rect.y - camera.y, rect.w, rect.h};
+    SDL_RenderCopy(renderer, sprite, nullptr, &dest);
 }

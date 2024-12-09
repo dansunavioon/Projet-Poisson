@@ -1,84 +1,88 @@
-#include "Fenetre/Fenetre.h"
-#include "Poisson/Poisson.h"
+#include <SDL.h>
+#include <SDL_image.h>
 #include <vector>
 #include <ctime>
 #include <iostream>
 #include <mutex>
+#include "Fenetre/Fenetre.h"
+#include "Personage/Personnage.h"
+#include "Poisson/Poisson.h"
+#include "Personage/var_personnage.h"
 
-std::vector<Poisson> poissons;
-std::mutex poissonsMutex;
-
-Uint32 updatePoissons(Uint32 interval, void* param)
-{
-    std::lock_guard<std::mutex> lock(poissonsMutex);
-    for (auto& poisson : poissons) {
-        poisson.update(poissons);
-    }
-    return interval;
-}
-
-int main(int argc, char* argv[])
-{
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
-    {
-        std::cerr << "Erreur SDL_Init : " << SDL_GetError() << std::endl;
-        return -1;
+int main(int argc, char* argv[]) {
+    // Initialisation de SDL
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        std::cerr << "Erreur lors de l'initialisation de SDL: " << SDL_GetError() << std::endl;
+        return EXIT_FAILURE;
     }
 
-    Fenetre fenetre("Poissons", 800, 600);
-    if (!fenetre.estValide())
-    {
+    // Initialisation de SDL_image
+    if (IMG_Init(IMG_INIT_PNG) < 0) {
+        std::cerr << "Erreur lors de l'initialisation de SDL_image: " << IMG_GetError() << std::endl;
         SDL_Quit();
-        return -1;
+        return EXIT_FAILURE;
     }
 
-    srand(static_cast<unsigned int>(time(0)));
+    const int largeurFenetre = 800;
+    const int hauteurFenetre = 600;
 
+    // Création de la fenêtre
+    Fenetre fenetre("Simulation Poissons", largeurFenetre, hauteurFenetre);
+    if (!fenetre.estValide()) {
+        IMG_Quit();
+        SDL_Quit();
+        return EXIT_FAILURE;
+    }
+
+    // Création du personnage
+    Personnage plongeur(fenetre.obtenirRenderer());
+
+    // Création des poissons
+    std::vector<Poisson> poissons;
     int nombrePoissons = 200;
-    for (int i = 0; i < nombrePoissons; ++i)
-    {
-        float randomX = static_cast<float>(rand() % 800);
-        float randomY = static_cast<float>(rand() % 600);
-        bool independent = (rand() % 4 == 0);
-        poissons.emplace_back(fenetre.obtenirRenderer(), randomX, randomY, independent);
+    for (int i = 0; i < nombrePoissons; ++i) {
+        float randomX = static_cast<float>(rand() % MAP_WIDTH);
+        float randomY = static_cast<float>(rand() % MAP_HEIGHT);
+        poissons.emplace_back(fenetre.obtenirRenderer(), randomX, randomY);
     }
 
-    const int updateInterval = 16;
-    SDL_TimerID timerID = SDL_AddTimer(updateInterval, updatePoissons, nullptr);
-    if (!timerID)
-    {
-        std::cerr << "Erreur de création du timer : " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        return -1;
-    }
+    SDL_Event events;
+    bool isRunning = true;
+    Uint32 animationTimer = 0;
+    const Uint32 animationDelay = 100;
 
-    bool running = true;
-    SDL_Event event;
+    SDL_Rect camera = {0, 0, largeurFenetre, hauteurFenetre};
 
-    while (running)
-    {
-        while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT)
-            {
-                running = false;
+    while (isRunning) {
+        while (SDL_PollEvent(&events)) {
+            if (events.type == SDL_QUIT) {
+                isRunning = false;
+            } else {
+                plongeur.handleInput(events);
             }
         }
 
-        fenetre.effacer();
+        Uint32 currentTime = SDL_GetTicks();
+        if (currentTime - animationTimer >= animationDelay) {
+            plongeur.update();
+            animationTimer = currentTime;
+        }
 
-        {
-            std::lock_guard<std::mutex> lock(poissonsMutex);
-            for (const auto& poisson : poissons)
-            {
-                poisson.draw(fenetre.obtenirRenderer());
-            }
+        SDL_Rect personnageRect = {plongeur.getX(), plongeur.getY(), TAILLE_PLONGEUR, TAILLE_PLONGEUR};
+        fenetre.updateCamera(personnageRect);
+
+        fenetre.effacer();
+        plongeur.render(fenetre.obtenirRenderer(), camera);
+
+        for (auto& poisson : poissons) {
+            poisson.update(poissons);
+            poisson.draw(fenetre.obtenirRenderer(), camera);
         }
 
         fenetre.afficher();
     }
 
-    SDL_RemoveTimer(timerID);
+    IMG_Quit();
     SDL_Quit();
-    return 0;
+    return EXIT_SUCCESS;
 }
