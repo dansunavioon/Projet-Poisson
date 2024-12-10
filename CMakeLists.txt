@@ -6,6 +6,7 @@ project(Projet_Poisson)
 
 # Rechercher la bibliothèque SDL2
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_DIR}/include)
 include_directories(${SDL2_IMAGE_DIR}/include)
@@ -34,11 +35,9 @@ add_executable(Projet_Poisson main.cpp
         Fenetre/Fenetre.h
 )
 
-# Inclure les fichiers d'en-tête SDL2
-target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})
 
 # Lier la bibliothèque SDL2 à votre exécutable
-target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARY})
+target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES} SDL2_image::SDL2_image)
 
 
 
