@@ -22,10 +22,4 @@ include_directories(${SDL_IMAGE_PATH}/include)
 target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})
 
 # Lier la bibliothèque SDL2 à votre exécutable
-target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES} ${SDL_IMAGE_PATH}/lib/libSDL2_image.a)
-
-
-
-
-
-
+target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES} ${SDL_IMAGE_PATH}/lib/libSDL2_image.a -lSDL2_image)
