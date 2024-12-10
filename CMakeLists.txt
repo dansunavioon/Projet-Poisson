@@ -19,6 +19,8 @@ add_executable(Projet_Poisson
         Personage/Personnage.h
         Personage/var_personnage.h
         Personage/var_personnage.cpp
+        Map/Map.cpp
+        Map/Map.h
 )
 
 # Lier SDL2 et SDL2_mixer à l'exécutable

@@ -15,13 +15,12 @@ Mix_Music* backgroundMusic = nullptr;
  * @param width
  */
 
-Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, const int width){
-    this->window = window;
-    this->renderer = renderer;
-    this->height = height;
-    this->width = width;
+Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, int height, int width) : window(window), renderer(renderer), height(height), width(width) {
+
     // Initialisation de la caméra
     camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+
+    map = new Map(this->renderer, MAP_WIDTH, MAP_HEIGHT);
 
     // Initialisation du son
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
@@ -37,37 +36,6 @@ Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, const int height, c
     // Lecture de la musique en boucle
     Mix_PlayMusic(backgroundMusic, -1);
 }
-/*
-void Fenetre::openSettingsWindow() {
-    SDL_Window* settingsWindow = SDL_CreateWindow("Paramètres", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 300, SDL_WINDOW_SHOWN);
-    SDL_Renderer* settingsRenderer = SDL_CreateRenderer(settingsWindow, -1, SDL_RENDERER_ACCELERATED);
-
-    bool isSettingsOpen = true;
-    SDL_Event settingsEvent;
-
-    while (isSettingsOpen) {
-        while (SDL_PollEvent(&settingsEvent)) {
-            if (settingsEvent.type == SDL_QUIT || (settingsEvent.type == SDL_KEYDOWN && settingsEvent.key.keysym.sym == SDLK_ESCAPE)) {
-                isSettingsOpen = false;
-            }
-
-            if (settingsEvent.type == SDL_KEYDOWN && settingsEvent.key.keysym.sym == SDLK_UP) {
-                Mix_VolumeMusic(MIX_MAX_VOLUME); // Volume maximum
-            }
-            if (settingsEvent.type == SDL_KEYDOWN && settingsEvent.key.keysym.sym == SDLK_DOWN) {
-                Mix_VolumeMusic(0); // Couper le son
-            }
-        }
-
-        SDL_SetRenderDrawColor(settingsRenderer, 200, 200, 200, 255);
-        SDL_RenderClear(settingsRenderer);
-        SDL_RenderPresent(settingsRenderer);
-    }
-
-    SDL_DestroyRenderer(settingsRenderer);
-    SDL_DestroyWindow(settingsWindow);
-}
-*/
 
 void Fenetre::updateCamera(const SDL_Rect& personnageRect) {
     // Centrer la caméra sur le personnage
@@ -86,25 +54,11 @@ int Fenetre::display(){
     // Initialisation
     SDL_Init(SDL_INIT_EVERYTHING);
 
-
     this->window = SDL_CreateWindow("Poisson", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->width, this->height, SDL_WINDOW_SHOWN);
     this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-
-    // Dessin du fond bleu avec un dégradé vertical
-    for (int y = 0; y < this->height; y++) {
-        int blueValue = 255 - (y * 255 / this->height); // Calcul d'un dégradé du bleu (du plus clair au plus foncé)
-        SDL_SetRenderDrawColor(this->renderer, 0, 0, blueValue, 255);
-        SDL_RenderDrawLine(this->renderer, 0, y, this->width, y);
-    }
-
-    SDL_RenderClear(this->renderer);
-    SDL_RenderPresent(this->renderer);
-
     // Créer un objet Personnage avec le renderer
     Personnage plongeur(renderer);
-
-
 
     SDL_Event events;
 
@@ -145,6 +99,9 @@ int Fenetre::display(){
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Noir par défaut pour effacer
         SDL_RenderClear(renderer);
 
+        // Dessiner la carte
+        map->render(camera);
+
         // Dessin du fond bleu avec un dégradé vertical en fonction de la caméra
         for (int y = 0; y < camera.h; y++) {
             int blueValue = 255 - ((camera.y + y) * 255 / MAP_HEIGHT); // Dégradé en fonction de la position sur la map
@@ -170,25 +127,6 @@ int Fenetre::display(){
         // Rendre le personnage à sa nouvelle position
         plongeur.render();
 
-/*
-        // Dessiner le bouton des paramètres
-        SDL_SetRenderDrawColor(renderer, 100, 100, 255, 255); // Couleur du bouton (bleu)
-        SDL_Rect settingsButton = { 10, 10, 100, 40 }; // Position et taille du bouton
-        SDL_RenderFillRect(renderer, &settingsButton);
-
-        // Gestion des événements pour le clic sur le bouton
-        if (events.type == SDL_MOUSEBUTTONDOWN) {
-            int mouseX = events.button.x;
-            int mouseY = events.button.y;
-
-            if (mouseX >= settingsButton.x && mouseX <= (settingsButton.x + settingsButton.w) &&
-                mouseY >= settingsButton.y && mouseY <= (settingsButton.y + settingsButton.h)) {
-
-                openSettingsWindow(); // Fonction pour gérer les paramètres
-            }
-        }
-        */
-
         // Afficher le rendu à l'écran
         SDL_RenderPresent(renderer);
     }
@@ -196,6 +134,7 @@ int Fenetre::display(){
     // Quitter proprement
     Mix_FreeMusic(backgroundMusic);
     Mix_CloseAudio();
+    delete map;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

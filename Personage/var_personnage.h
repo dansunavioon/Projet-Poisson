@@ -4,7 +4,7 @@
 #include <SDL_surface.h>
 #include <SDL.h>
 
-// Les attributs de l'écran (800 * 600)
+// Camera
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
@@ -14,7 +14,7 @@ const int SHEET_WIDTH_BATON = 69;
 
 const int TAILLE_PLONGEUR = 198;
 
-extern SDL_Rect camera; // Camera
+extern SDL_Rect camera; // Map
 const int MAP_WIDTH = 3000;  // Largeur de la carte
 const int MAP_HEIGHT = 2000; // Hauteur de la carte
 
