@@ -1,88 +1,111 @@
 #include <SDL.h>
-#include <SDL_image.h>
+#include "Poisson/Poisson.h"
 #include <vector>
 #include <ctime>
 #include <iostream>
 #include <mutex>
-#include "Fenetre/Fenetre.h"
-#include "Personage/Personnage.h"
-#include "Poisson/Poisson.h"
-#include "Personage/var_personnage.h"
 
-int main(int argc, char* argv[]) {
+// Déclarations globales
+std::vector<Poisson> poissons;
+std::mutex poissonsMutex;
+
+// Fonction de mise à jour des poissons
+Uint32 updatePoissons(Uint32 interval, void* param)
+{
+    std::lock_guard<std::mutex> lock(poissonsMutex);
+    for (auto& poisson : poissons) {
+        poisson.update(poissons);
+    }
+    return interval;
+}
+
+int main(int argc, char* argv[])
+{
     // Initialisation de SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "Erreur lors de l'initialisation de SDL: " << SDL_GetError() << std::endl;
-        return EXIT_FAILURE;
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+    {
+        std::cerr << "Erreur SDL_Init : " << SDL_GetError() << std::endl;
+        return -1;
     }
-
-    // Initialisation de SDL_image
-    if (IMG_Init(IMG_INIT_PNG) < 0) {
-        std::cerr << "Erreur lors de l'initialisation de SDL_image: " << IMG_GetError() << std::endl;
-        SDL_Quit();
-        return EXIT_FAILURE;
-    }
-
-    const int largeurFenetre = 800;
-    const int hauteurFenetre = 600;
 
     // Création de la fenêtre
-    Fenetre fenetre("Simulation Poissons", largeurFenetre, hauteurFenetre);
-    if (!fenetre.estValide()) {
-        IMG_Quit();
+    SDL_Window* window = SDL_CreateWindow("Poissons", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
+    if (!window)
+    {
+        std::cerr << "Erreur de création de la fenêtre : " << SDL_GetError() << std::endl;
         SDL_Quit();
-        return EXIT_FAILURE;
+        return -1;
     }
 
-    // Création du personnage
-    Personnage plongeur(fenetre.obtenirRenderer());
+    // Création du renderer
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer)
+    {
+        std::cerr << "Erreur de création du renderer : " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
 
-    // Création des poissons
-    std::vector<Poisson> poissons;
+    // Initialisation des poissons
+    srand(static_cast<unsigned int>(time(0)));
     int nombrePoissons = 200;
-    for (int i = 0; i < nombrePoissons; ++i) {
-        float randomX = static_cast<float>(rand() % MAP_WIDTH);
-        float randomY = static_cast<float>(rand() % MAP_HEIGHT);
-        poissons.emplace_back(fenetre.obtenirRenderer(), randomX, randomY);
+    for (int i = 0; i < nombrePoissons; ++i)
+    {
+        float randomX = static_cast<float>(rand() % 800);
+        float randomY = static_cast<float>(rand() % 600);
+        bool independent = (rand() % 4 == 0); // 25% des poissons sont indépendants
+        poissons.emplace_back(renderer, randomX, randomY, independent);
     }
 
-    SDL_Event events;
-    bool isRunning = true;
-    Uint32 animationTimer = 0;
-    const Uint32 animationDelay = 100;
+    // Définir un timer pour mettre à jour les poissons
+    const int updateInterval = 16; // Mise à jour tous les ~16ms (environ 60 FPS)
+    SDL_TimerID timerID = SDL_AddTimer(updateInterval, updatePoissons, nullptr);
+    if (!timerID)
+    {
+        std::cerr << "Erreur de création du timer : " << SDL_GetError() << std::endl;
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
 
-    SDL_Rect camera = {0, 0, largeurFenetre, hauteurFenetre};
-
-    while (isRunning) {
-        while (SDL_PollEvent(&events)) {
-            if (events.type == SDL_QUIT) {
-                isRunning = false;
-            } else {
-                plongeur.handleInput(events);
+    // Boucle principale
+    bool running = true;
+    SDL_Event event;
+    while (running)
+    {
+        // Gestion des événements
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
+                running = false;
             }
         }
 
-        Uint32 currentTime = SDL_GetTicks();
-        if (currentTime - animationTimer >= animationDelay) {
-            plongeur.update();
-            animationTimer = currentTime;
+        // Effacer l'écran
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Fond noir
+        SDL_RenderClear(renderer);
+
+        // Dessiner les poissons
+        {
+            std::lock_guard<std::mutex> lock(poissonsMutex);
+            for (const auto& poisson : poissons)
+            {
+                poisson.draw(renderer);
+            }
         }
 
-        SDL_Rect personnageRect = {plongeur.getX(), plongeur.getY(), TAILLE_PLONGEUR, TAILLE_PLONGEUR};
-        fenetre.updateCamera(personnageRect);
-
-        fenetre.effacer();
-        plongeur.render(fenetre.obtenirRenderer(), camera);
-
-        for (auto& poisson : poissons) {
-            poisson.update(poissons);
-            poisson.draw(fenetre.obtenirRenderer(), camera);
-        }
-
-        fenetre.afficher();
+        // Afficher le rendu
+        SDL_RenderPresent(renderer);
     }
 
-    IMG_Quit();
+    // Nettoyage
+    SDL_RemoveTimer(timerID);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     SDL_Quit();
-    return EXIT_SUCCESS;
+
+    return 0;
 }
