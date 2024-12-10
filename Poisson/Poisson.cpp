@@ -1,4 +1,5 @@
 #include "Poisson.h"
+#include <SDL_image.h>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -10,6 +11,13 @@ Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): re
     velocity.x = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1); // Vitesse initiale aléatoire
     velocity.y = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
 
+    // Initialiser SDL_image
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+    {
+        std::cerr << "Erreur SDL_image init : " << IMG_GetError() << std::endl;
+        texture = nullptr;
+        return;
+    }
     // Charger l'image du poisson avec SDL_image
     SDL_Surface* tempSurface = IMG_Load("Image_Poisson/Poisson12.png");
     if (tempSurface)

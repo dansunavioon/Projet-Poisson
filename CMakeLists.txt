@@ -29,6 +29,3 @@ target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES} ${SDL_IMAGE_PATH}
 
 
 
-
-
-
