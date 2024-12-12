@@ -9,7 +9,6 @@
 #include "../Algue/Algue.h"
 #include "../Roche/Roche.h"
 #include "../Personage/Personnage.h"
-#include "../Poisson/Poisson.h"
 #include "../Personage/var_personnage.h"
 
 class Map {

@@ -100,16 +100,6 @@ int Map::generer(){
     // Créer un objet Personnage avec le renderer
     Personnage plongeur(this->renderer, camera);
 
-    // Création des poissons avec des positions de départ aléatoires
-    std::vector<Poisson> poissons;
-    int nombrePoissons = 600; // Nombre de poissons
-    for (int i = 0; i < nombrePoissons; ++i)
-    {
-        float randomX = static_cast<float>(rand() % 800); // Position X aléatoire
-        float randomY = static_cast<float>(rand() % 600); // Position Y aléatoire
-        poissons.emplace_back(randomX, randomY);
-    }
-
     SDL_Event events;
 
     // Boucle infinie qui empeche la destruction de la fenetre tant que la fenetre n'est pas fermée
@@ -139,11 +129,6 @@ int Map::generer(){
         if (currentTime - animationTimer >= animationDelay) {
             plongeur.update(); // Mettre à jour l'animation
             animationTimer = currentTime; // Réinitialiser le timer
-        }
-
-        // Mise à jour des poissons
-        for (auto& poisson : poissons) {
-            poisson.update(poissons);
         }
 
         // Mettre à jour la caméra en fonction de la position du personnage
@@ -179,13 +164,6 @@ int Map::generer(){
 
         std::cout << "Personnage: (" << plongeur.getX() << ", " << plongeur.getY() << ")" << std::endl;
         std::cout << "Camera: (" << camera->getX() << ", " << camera->getY() << ")" << std::endl;
-
-
-        // Dessine les poissons
-        for (const auto& poisson : poissons)
-        {
-            poisson.draw(this->renderer);
-        }
 
         // Afficher le rendu à l'écran
         SDL_RenderPresent(this->renderer);
