@@ -10,7 +10,7 @@ class Fenetre {
         SDL_Window* window;
         SDL_Renderer* renderer;
         int height, width;
-        SDL_Rect camera;
+        // metre camera ici
         Map* map;
 
     public:
