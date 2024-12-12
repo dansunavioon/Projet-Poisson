@@ -3,6 +3,7 @@ project(Projet_Poisson)
 
 # Rechercher la bibliothèque SDL2
 find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
 
 # Chemin vers la bibliothèque SDL_image dans cmake-build-debug
 set(SDL_IMAGE_PATH "C:/Users/Kylian/CLionProjects/Projet-Poisson/cmake-build-debug/SDL_image")
@@ -22,4 +23,4 @@ include_directories(${SDL_IMAGE_PATH}/include)
 target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})
 
 # Lier la bibliothèque SDL2 à votre exécutable
-target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES} ${SDL_IMAGE_PATH}/lib/libSDL2_image.a -lSDL2_image)
+target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES} $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)
