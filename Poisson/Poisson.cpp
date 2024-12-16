@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 
-Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): renderer(renderer), independent(independent), angle(0.0)
+Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): renderer(renderer), independent(independent), angle(0.0), captured(false), respawnTime(0)
 {
     position.x = static_cast<int>(x);
     position.y = static_cast<int>(y);
@@ -152,4 +152,37 @@ SDL_Point Poisson::separationBehavior(const std::vector<Poisson>& poissons)
     }
 
     return steering;
+}
+void Poisson::respawnIfNeeded(int mapWidth, int mapHeight)
+{
+    if (captured && SDL_GetTicks() > respawnTime)
+    {
+        // Réapparaître en dehors des limites de la carte
+        int side = rand() % 4; // 0: gauche, 1: droite, 2: haut, 3: bas
+        switch (side)
+        {
+        case 0: // Gauche
+            position.x = -50;
+            position.y = rand() % mapHeight;
+            break;
+        case 1: // Droite
+            position.x = mapWidth + 50;
+            position.y = rand() % mapHeight;
+            break;
+        case 2: // Haut
+            position.x = rand() % mapWidth;
+            position.y = -50;
+            break;
+        case 3: // Bas
+            position.x = rand() % mapWidth;
+            position.y = mapHeight + 50;
+            break;
+        }
+
+        // Donner une vitesse initiale vers l'intérieur de la carte
+        velocity.x = (mapWidth / 2 - position.x) * 0.01f;
+        velocity.y = (mapHeight / 2 - position.y) * 0.01f;
+
+        captured = false;
+    }
 }

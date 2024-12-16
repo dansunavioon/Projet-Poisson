@@ -12,6 +12,7 @@ public:
 
     void update(const std::vector<Poisson>& poissons);
     void draw(SDL_Renderer* renderer, const SDL_Point& cameraPosition) const; // Signature corrigée
+    void hunt(std::vector<Poisson>& poissons);
 
 private:
     SDL_Renderer* renderer;
@@ -20,6 +21,8 @@ private:
     SDL_Texture* texture; // Texture pour le requin
 
     void chaseFish(const std::vector<Poisson>& poissons);
+
+    float angle;
 };
 
 #endif

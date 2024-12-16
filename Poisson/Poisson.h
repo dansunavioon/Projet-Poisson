@@ -19,6 +19,11 @@ public:
     Poisson(SDL_Renderer* renderer, float x, float y, bool independent);
     ~Poisson();
 
+    bool isCaptured() const { return captured; }
+    void setCaptured(bool state) { captured = state; }
+    void setRespawnTime(Uint32 time) { respawnTime = time; }
+    void respawnIfNeeded(int mapWidth, int mapHeight);
+
     void update(const std::vector<Poisson>& poissons);
     void draw(SDL_Renderer* renderer, const SDL_Point& cameraPosition) const;
 
@@ -26,6 +31,7 @@ public:
 
 private:
     void applyBehaviors(const std::vector<Poisson>& poissons);
+
     SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
     SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
     float angle; // Angle actuel du poisson pour la rotation
@@ -36,6 +42,8 @@ private:
     SDL_Texture* texture;
     bool independent;
     int groupId;
+    bool captured;
+    Uint32 respawnTime;
 
     static constexpr int MAX_GROUPS = 20;
 };

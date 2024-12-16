@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
     srand(static_cast<unsigned int>(time(0)));
 
     // Création des poissons
-    int nombrePoissons = 100;
+    int nombrePoissons = 50;
     for (int i = 0; i < nombrePoissons; ++i)
     {
         float randomX = static_cast<float>(rand() % MAP_WIDTH);
@@ -130,6 +130,22 @@ int main(int argc, char* argv[])
         else if (cameraPosition.x > MAP_WIDTH - CAMERA_WIDTH) cameraPosition.x = MAP_WIDTH - CAMERA_WIDTH;
         else if (cameraPosition.y > MAP_HEIGHT - CAMERA_HEIGHT) cameraPosition.y = MAP_HEIGHT - CAMERA_HEIGHT;
 
+        // Le requin chasse les poissons
+        if (sharkBoss)
+        {
+            sharkBoss->hunt(poissons);
+        }
+
+        // Mise à jour des poissons et gestion de leur réapparition
+        {
+            std::lock_guard<std::mutex> lock(poissonsMutex);
+            for (auto& poisson : poissons)
+            {
+                poisson.respawnIfNeeded(MAP_WIDTH, MAP_HEIGHT);
+                poisson.update(poissons);
+            }
+        }
+
         // Rendu
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Bleu pour la mer
         SDL_RenderClear(renderer);
@@ -139,7 +155,8 @@ int main(int argc, char* argv[])
             std::lock_guard<std::mutex> lock(poissonsMutex);
             for (const auto& poisson : poissons)
             {
-                poisson.draw(renderer, cameraPosition);
+                if (!poisson.isCaptured())
+                    poisson.draw(renderer, cameraPosition);
             }
         }
 
@@ -152,6 +169,7 @@ int main(int argc, char* argv[])
         SDL_RenderPresent(renderer);
         SDL_Delay(16); // ~60 FPS
     }
+
 
     SDL_RemoveTimer(timerID);
 
