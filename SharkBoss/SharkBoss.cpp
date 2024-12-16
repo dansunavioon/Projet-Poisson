@@ -127,7 +127,7 @@ void SharkBoss::chaseFish(const std::vector<Poisson>& poissons)
 }
 void SharkBoss::hunt(std::vector<Poisson>& poissons)
 {
-    const int captureRadius = 50; // Distance pour capturer un poisson
+    const int captureRadius = 25; // Distance pour capturer un poisson
     for (auto& poisson : poissons)
     {
         // Vérifier la distance entre le requin et le poisson
