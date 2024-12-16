@@ -15,6 +15,8 @@ add_executable(
         Projet_Poisson main.cpp
         Poisson/Poisson.cpp
         Poisson/Poisson.h
+        SharkBoss/SharkBoss.cpp
+        SharkBoss/SharkBoss.h
 )
 
 # Inclure les fichiers d'en-tête de SDL_image
