@@ -23,6 +23,8 @@ add_executable(
 include_directories(${SDL_IMAGE_PATH}/include)
 
 target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})
+target_include_directories(Projet_Poisson PRIVATE ${CMAKE_SOURCE_DIR}/Poisson)
+
 
 # Lier la bibliothèque SDL2 à votre exécutable
 target_link_libraries(Projet_Poisson PRIVATE ${SDL2_LIBRARIES} $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>)

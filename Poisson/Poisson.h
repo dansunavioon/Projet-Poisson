@@ -22,6 +22,8 @@ public:
     void update(const std::vector<Poisson>& poissons);
     void draw(SDL_Renderer* renderer, const SDL_Point& cameraPosition) const;
 
+    SDL_Point getPosition() const { return position; }
+
 private:
     void applyBehaviors(const std::vector<Poisson>& poissons);
     SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);

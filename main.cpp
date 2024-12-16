@@ -1,10 +1,11 @@
 #include <SDL.h>
-#include "Poisson/Poisson.h"
+#include "Poisson.h"
 #include <vector>
 #include <ctime>
 #include <iostream>
 #include <mutex>
 
+// Vecteur des poissons
 std::vector<Poisson> poissons;
 std::mutex poissonsMutex;
 
@@ -37,7 +38,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    SDL_Window* window = SDL_CreateWindow("Simulation de poissons",SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,CAMERA_WIDTH, CAMERA_HEIGHT,SDL_WINDOW_SHOWN);
+    SDL_Window* window = SDL_CreateWindow("Simulation de poissons", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CAMERA_WIDTH, CAMERA_HEIGHT, SDL_WINDOW_SHOWN);
     if (!window)
     {
         std::cerr << "Erreur lors de la création de la fenêtre : " << SDL_GetError() << std::endl;
@@ -59,8 +60,8 @@ int main(int argc, char* argv[])
     int nombrePoissons = 200;
     for (int i = 0; i < nombrePoissons; ++i)
     {
-        float randomX = static_cast<float>(rand() % 800);
-        float randomY = static_cast<float>(rand() % 600);
+        float randomX = static_cast<float>(rand() % MAP_WIDTH);
+        float randomY = static_cast<float>(rand() % MAP_HEIGHT);
         bool independent = (rand() % 6 == 0);
         poissons.emplace_back(renderer, randomX, randomY, independent);
     }
@@ -103,11 +104,13 @@ int main(int argc, char* argv[])
         else if (cameraPosition.x > MAP_WIDTH - CAMERA_WIDTH) cameraPosition.x = MAP_WIDTH - CAMERA_WIDTH;
         else if (cameraPosition.y > MAP_HEIGHT - CAMERA_HEIGHT) cameraPosition.y = MAP_HEIGHT - CAMERA_HEIGHT;
 
+        // Mise à jour des poissons
         for (auto& poisson : poissons)
         {
             poisson.update(poissons);
         }
 
+        // Affichage des poissons
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Bleu pour la mer
         SDL_RenderClear(renderer);
         {
