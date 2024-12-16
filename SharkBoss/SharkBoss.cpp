@@ -39,8 +39,31 @@ void SharkBoss::update(const std::vector<Poisson>& poissons)
 
     angle = std::atan2(velocity.y, velocity.x) * 180 / M_PI;
 
+    // Si le poisson dépasse la limite droite
+    if (position.x >= MAP_WIDTH-20) {
+        angle = 180.0f - angle;  // Inverser l'angle horizontal
+        position.x = MAP_WIDTH - 20;  // Fixer la position au bord droit
+    }
+    // Si le poisson dépasse la limite gauche
+    else if (position.x < 20) {
+        angle = 180.0f - angle;  // Inverser l'angle horizontal
+        position.x = 20;  // Fixer la position au bord gauche
+    }
+
+    // Si le poisson dépasse la limite inférieure
+    if (position.y >= MAP_HEIGHT-20) {
+        angle = -angle;  // Inverser l'angle vertical
+        position.y = MAP_HEIGHT - 20;  // Fixer la position au bord inférieur
+    }
+    // Si le poisson dépasse la limite supérieure
+    else if (position.y < 20) {
+        angle = -angle;  // Inverser l'angle vertical
+        position.y = 20;  // Fixer la position au bord supérieur
+    }
+
+
     // Limiter la vitesse
-    float speedLimit = 5.0f;
+    float speedLimit = 4.0f;
     float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
     if (speed > speedLimit)
     {
@@ -56,7 +79,7 @@ void SharkBoss::draw(SDL_Renderer* renderer, const SDL_Point& cameraPosition) co
         SDL_Rect renderQuad = {
             position.x - cameraPosition.x,
             position.y - cameraPosition.y,
-            150, 100 // Dimensions du requin
+            175, 125 // Dimensions du requin
         };
         SDL_Point center = {16, 16}; // Point central pour la rotation
 
@@ -98,8 +121,8 @@ void SharkBoss::chaseFish(const std::vector<Poisson>& poissons)
     // Ajuster la vélocité pour chasser le poisson cible
     if (closestDistance != INT_MAX)
     {
-        velocity.x = target.x - position.x;
-        velocity.y = target.y - position.y;
+        velocity.x = target.x - position.x-1.5f;
+        velocity.y = target.y - position.y-1.5f;
     }
 }
 void SharkBoss::hunt(std::vector<Poisson>& poissons)

@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
         }
 
         SDL_RenderPresent(renderer);
-        SDL_Delay(16); // ~60 FPS
+        SDL_Delay(14);
     }
 
 

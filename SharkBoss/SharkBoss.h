@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 #include <vector>
-#include "../Poisson/Poisson.h"
+#include "Poisson.h"
 
 class SharkBoss {
 public:
