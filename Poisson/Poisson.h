@@ -35,7 +35,7 @@ private:
     bool independent;
     int groupId;
 
-    static constexpr int MAX_GROUPS = 15;
+    static constexpr int MAX_GROUPS = 20;
 };
 
 #endif // POISSON_H
