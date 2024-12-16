@@ -1,23 +1,17 @@
 #include <SDL.h>
 #include "Poisson.h"
+#include "SharkBoss.h"
 #include <vector>
 #include <ctime>
 #include <iostream>
 #include <mutex>
 
-// Vecteur des poissons
+// Vecteurs de poissons et mutex pour synchronisation
 std::vector<Poisson> poissons;
 std::mutex poissonsMutex;
 
-Uint32 updatePoissons(Uint32 interval, void* param)
-{
-    std::lock_guard<std::mutex> lock(poissonsMutex);
-    for (auto& poisson : poissons)
-    {
-        poisson.update(poissons);
-    }
-    return interval;
-}
+// Requin boss
+SharkBoss* sharkBoss = nullptr;
 
 // Dimensions de la carte
 const int MAP_WIDTH = 3000;
@@ -30,6 +24,23 @@ const int CAMERA_HEIGHT = 600;
 // Position initiale de la caméra
 SDL_Point cameraPosition = {0, 0};
 
+// Mise à jour des poissons
+Uint32 updatePoissons(Uint32 interval, void* param)
+{
+    std::lock_guard<std::mutex> lock(poissonsMutex);
+    for (auto& poisson : poissons)
+    {
+        poisson.update(poissons);
+    }
+
+    if (sharkBoss)
+    {
+        sharkBoss->update(poissons);
+    }
+
+    return interval;
+}
+
 int main(int argc, char* argv[])
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -38,7 +49,15 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    SDL_Window* window = SDL_CreateWindow("Simulation de poissons", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, CAMERA_WIDTH, CAMERA_HEIGHT, SDL_WINDOW_SHOWN);
+    SDL_Window* window = SDL_CreateWindow(
+        "Simulation de poissons",
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        CAMERA_WIDTH,
+        CAMERA_HEIGHT,
+        SDL_WINDOW_SHOWN
+    );
+
     if (!window)
     {
         std::cerr << "Erreur lors de la création de la fenêtre : " << SDL_GetError() << std::endl;
@@ -57,7 +76,8 @@ int main(int argc, char* argv[])
 
     srand(static_cast<unsigned int>(time(0)));
 
-    int nombrePoissons = 200;
+    // Création des poissons
+    int nombrePoissons = 100;
     for (int i = 0; i < nombrePoissons; ++i)
     {
         float randomX = static_cast<float>(rand() % MAP_WIDTH);
@@ -66,7 +86,13 @@ int main(int argc, char* argv[])
         poissons.emplace_back(renderer, randomX, randomY, independent);
     }
 
-    const int updateInterval = 16;
+    // Création du requin boss
+    float sharkX = static_cast<float>(MAP_WIDTH / 2);
+    float sharkY = static_cast<float>(MAP_HEIGHT / 2);
+    sharkBoss = new SharkBoss(renderer, sharkX, sharkY);
+
+    // Timer pour mise à jour des poissons et du requin
+    const int updateInterval = 16; // ~60 FPS
     SDL_TimerID timerID = SDL_AddTimer(updateInterval, updatePoissons, nullptr);
     if (!timerID)
     {
@@ -104,15 +130,11 @@ int main(int argc, char* argv[])
         else if (cameraPosition.x > MAP_WIDTH - CAMERA_WIDTH) cameraPosition.x = MAP_WIDTH - CAMERA_WIDTH;
         else if (cameraPosition.y > MAP_HEIGHT - CAMERA_HEIGHT) cameraPosition.y = MAP_HEIGHT - CAMERA_HEIGHT;
 
-        // Mise à jour des poissons
-        for (auto& poisson : poissons)
-        {
-            poisson.update(poissons);
-        }
-
-        // Affichage des poissons
+        // Rendu
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Bleu pour la mer
         SDL_RenderClear(renderer);
+
+        // Dessin des poissons
         {
             std::lock_guard<std::mutex> lock(poissonsMutex);
             for (const auto& poisson : poissons)
@@ -120,12 +142,20 @@ int main(int argc, char* argv[])
                 poisson.draw(renderer, cameraPosition);
             }
         }
+
+        // Dessin du requin
+        if (sharkBoss)
+        {
+            sharkBoss->draw(renderer, cameraPosition);
+        }
+
         SDL_RenderPresent(renderer);
         SDL_Delay(16); // ~60 FPS
     }
 
     SDL_RemoveTimer(timerID);
 
+    delete sharkBoss;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

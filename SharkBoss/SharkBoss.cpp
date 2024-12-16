@@ -3,10 +3,10 @@
 #include <iostream>
 
 SharkBoss::SharkBoss(SDL_Renderer* renderer, float x, float y)
-    : renderer(renderer), position{x, y}, velocity{0, 0}, texture(nullptr)
+    : renderer(renderer), position{static_cast<int>(x), static_cast<int>(y)}, velocity{0, 0}, texture(nullptr)
 {
-    // Création d'une texture pour le requin
-    SDL_Surface* tempSurface = SDL_LoadBMP("SharkBoss.bmp");
+    // Chargement de la texture du requin
+    SDL_Surface* tempSurface = SDL_LoadBMP("Image_SharkBoss/SharkBoss.bmp");
     if (tempSurface)
     {
         texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
@@ -39,12 +39,12 @@ void SharkBoss::update(const std::vector<Poisson>& poissons)
     position.y += velocity.y;
 
     // Limiter la vitesse
-    float speedLimit = 5.0f;
+    float speedLimit = 6.0f;
     float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
     if (speed > speedLimit)
     {
-        velocity.x = (velocity.x / speed) * speedLimit;
-        velocity.y = (velocity.y / speed) * speedLimit;
+        velocity.x = static_cast<int>((velocity.x / speed) * speedLimit);
+        velocity.y = static_cast<int>((velocity.y / speed) * speedLimit);
     }
 }
 
@@ -53,9 +53,9 @@ void SharkBoss::draw(SDL_Renderer* renderer, const SDL_Point& cameraPosition) co
     if (texture)
     {
         SDL_Rect renderQuad = {
-            static_cast<int>(position.x - cameraPosition.x),
-            static_cast<int>(position.y - cameraPosition.y),
-            100, 100 // Dimensions du requin
+            position.x - cameraPosition.x,
+            position.y - cameraPosition.y,
+            150, 100 // Dimensions du requin
         };
 
         SDL_RenderCopy(renderer, texture, nullptr, &renderQuad);
@@ -70,8 +70,8 @@ void SharkBoss::chaseFish(const std::vector<Poisson>& poissons)
     for (const auto& poisson : poissons)
     {
         SDL_Point fishPosition = poisson.getPosition(); // Utilisation du getter
-        int dx = fishPosition.x - static_cast<int>(position.x);
-        int dy = fishPosition.y - static_cast<int>(position.y);
+        int dx = fishPosition.x - position.x;
+        int dy = fishPosition.y - position.y;
         int distanceSquared = dx * dx + dy * dy;
 
         if (distanceSquared < closestDistance)
