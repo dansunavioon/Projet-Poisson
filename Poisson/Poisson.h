@@ -4,13 +4,11 @@
 #include <SDL.h>
 #include <vector>
 
-// Dimensions de la carte
-extern const int MAP_WIDTH;
-extern const int MAP_HEIGHT;
-
-// Dimensions de la caméra
-extern const int CAMERA_WIDTH;
-extern const int CAMERA_HEIGHT;
+// Constantes
+    static const int MAP_WIDTH = 3000;
+static const int MAP_HEIGHT = 2000;
+static const int CAMERA_WIDTH = 800;
+static const int CAMERA_HEIGHT = 600;
 
 
 class Poisson

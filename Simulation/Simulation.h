@@ -32,16 +32,16 @@ private:
     // Éléments de la simulation
     std::vector<Poisson> poissons;
     std::mutex poissonsMutex;
-    SharkBoss* sharkBoss;
+    SharkBoss* sharkBoss = nullptr;
 
     // Caméra
     SDL_Point cameraPosition;
 
     // Constantes
-    static const int MAP_WIDTH = 3000;
-    static const int MAP_HEIGHT = 2000;
-    static const int CAMERA_WIDTH = 800;
-    static const int CAMERA_HEIGHT = 600;
+    const int MAP_WIDTH = 3000;
+    const int MAP_HEIGHT = 2000;
+    const int CAMERA_WIDTH = 800;
+    const int CAMERA_HEIGHT = 600;
 
     // Timer
     SDL_TimerID timerID;

@@ -48,7 +48,7 @@ bool Simulation::initialize() {
 }
 
 void Simulation::initializePoissons() {
-    const int nombrePoissons = 50;
+    const int nombrePoissons = 100;
     for (int i = 0; i < nombrePoissons; ++i) {
         float randomX = static_cast<float>(rand() % MAP_WIDTH);
         float randomY = static_cast<float>(rand() % MAP_HEIGHT);
