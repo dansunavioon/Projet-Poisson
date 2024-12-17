@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <algorithm>
 
-
 Simulation::Simulation()
     : window(nullptr), renderer(nullptr), sharkBoss(nullptr), cameraPosition{0, 0}, timerID(0) {}
 
@@ -65,13 +64,12 @@ void Simulation::initializeSharkBoss() {
 
 void Simulation::run() {
     bool running = true;
-    SDL_Event event;
 
     while (running) {
         handleEvents(running);
-        update();
-        render();
-        SDL_Delay(14);
+        update();  // Mise à jour des entités, y compris le requin
+        render();  // Rendu de la scène
+        SDL_Delay(14); // Pour limiter la vitesse d'exécution
     }
 }
 
@@ -104,6 +102,7 @@ void Simulation::update() {
         }
     }
 
+    // Mettre à jour le requin (logique de chasse)
     if (sharkBoss) {
         sharkBoss->hunt(poissons);
     }
@@ -144,6 +143,8 @@ void Simulation::cleanUp() {
 
 Uint32 Simulation::updateCallback(Uint32 interval, void* param) {
     auto* simulation = static_cast<Simulation*>(param);
-    simulation->update();
+    if (simulation) {
+        simulation->update(); // Appel de la mise à jour
+    }
     return interval;
 }
