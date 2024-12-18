@@ -290,4 +290,5 @@ CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o: \
  /usr/include/c++/12/bits/locale_facets.tcc \
  /usr/include/c++/12/bits/basic_ios.tcc \
  /usr/include/c++/12/bits/ostream.tcc /usr/include/c++/12/istream \
- /usr/include/c++/12/bits/istream.tcc
+ /usr/include/c++/12/bits/istream.tcc /usr/include/SDL2/SDL_image.h \
+ /usr/include/SDL2/SDL.h

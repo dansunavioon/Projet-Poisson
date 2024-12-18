@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <SDL_image.h>
 
 Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): renderer(renderer), independent(independent), angle(0.0), captured(false), respawnTime(0)
 {
@@ -10,21 +11,11 @@ Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent): re
     velocity.x = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
     velocity.y = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
 
-    SDL_Surface* tempSurface = SDL_LoadBMP("Image_Poisson/Poisson12.bmp");
-    if (tempSurface)
-    {
-        texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
-        SDL_FreeSurface(tempSurface);
-        if (!texture)
-        {
-            std::cerr << "Erreur de création de la texture : " << SDL_GetError() << std::endl;
-        }
+    SDL_Surface* surface = IMG_Load("Image_Poisson/Poisson12.png");
+    if (!surface) {
+        std::cerr << "Erreur de chargement de l'image : " << IMG_GetError() << std::endl;
     }
-    else
-    {
-        std::cerr << "Erreur de chargement de l'image Poisson12.bmp : " << SDL_GetError() << std::endl;
-        texture = nullptr;
-    }
+
 
     groupId = rand() % MAX_GROUPS;
 }
