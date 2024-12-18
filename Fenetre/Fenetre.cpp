@@ -23,6 +23,9 @@ Mix_Music* backgroundMusic = nullptr;
 
 Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, int height, int width) : window(window), renderer(renderer), height(height), width(width) {
 
+    this->window = SDL_CreateWindow("Poisson", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->width, this->height, SDL_WINDOW_SHOWN);
+    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
     // Initialisation de la caméra
     camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
@@ -34,6 +37,7 @@ Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, int height, int wid
     }
 
     // Chargement de la musique de fond
+    isMusicOn = true; // La musique est activée par défaut
     Mix_Music* backgroundMusic = Mix_LoadMUS("son_map/fond_poisson.mp3");
     if (!backgroundMusic) {
         SDL_Log("Erreur : Impossible de charger la musique : %s", Mix_GetError());
@@ -67,16 +71,16 @@ void Fenetre::updateCamera(const SDL_Rect& personnageRect) {
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 
-void Fenetre::drawButton(SDL_Renderer* renderer, const char* text, TTF_Font* font, SDL_Color textColor, SDL_Color normalColor, SDL_Color hoverColor) {
+void Fenetre::drawButton(SDL_Renderer* renderer, const char* text, TTF_Font* font, SDL_Color textColor, SDL_Color normalColor, SDL_Color hoverColor, int x, int y, int width, int height) {
     // Vérifie si la souris est sur le bouton
-    bool isHovered = isMouseInsideButton(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+    bool isHovered = isMouseInsideButton(x, y, width, height);
 
     // Choisir la couleur selon l'état du bouton
     SDL_Color buttonColor = isHovered ? hoverColor : normalColor;
 
     // Dessiner le bouton
     SDL_SetRenderDrawColor(renderer, buttonColor.r, buttonColor.g, buttonColor.b, 255);
-    SDL_Rect buttonRect = { BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT };
+    SDL_Rect buttonRect = { x, y, width, height };
     SDL_RenderFillRect(renderer, &buttonRect);
 
     // Dessiner les contours du bouton (facultatif)
@@ -91,8 +95,8 @@ void Fenetre::drawButton(SDL_Renderer* renderer, const char* text, TTF_Font* fon
     int textWidth = textSurface->w;
     int textHeight = textSurface->h;
     SDL_Rect textRect = {
-            BUTTON_X + (BUTTON_WIDTH - textWidth) / 2,
-            BUTTON_Y + (BUTTON_HEIGHT - textHeight) / 2,
+            x + (width - textWidth) / 2,
+            y + (height - textHeight) / 2,
             textWidth,
             textHeight
     };
@@ -103,6 +107,7 @@ void Fenetre::drawButton(SDL_Renderer* renderer, const char* text, TTF_Font* fon
     SDL_FreeSurface(textSurface);
     SDL_DestroyTexture(textTexture);
 }
+
 
 bool Fenetre::isMouseInsideButton(int x, int y, int width, int height) {
     int mouseX, mouseY;
@@ -122,16 +127,8 @@ void Fenetre::openVolumeSettings() {
     bool isVolumeOpen = true;
     SDL_Event volumeEvent;
 
-    // Définir les dimensions et position du bouton "OK"
-    const int okButtonWidth = 80;
-    const int okButtonHeight = 40;
-    const int okButtonX = (400 - okButtonWidth) / 2; // Centré horizontalement
-    const int okButtonY = 150;                       // Position verticale vers le bas
-
-    // Couleurs pour le texte et le bouton
-    SDL_Color buttonTextColor = {255, 255, 255}; // Texte blanc
-    SDL_Color buttonNormalColor = {100, 100, 100}; // Bouton gris clair
-    SDL_Color buttonHoverColor = {150, 150, 150};  // Bouton gris survolé
+    SDL_Color textColor = {255, 255, 255, 255}; // Blanc
+    const char* message = "SDL2 n'est pas assez performant\npour gerer deux fenetres apparemment.";
 
     while (isVolumeOpen) {
         while (SDL_PollEvent(&volumeEvent)) {
@@ -140,13 +137,6 @@ void Fenetre::openVolumeSettings() {
                 case SDL_QUIT:
                     isVolumeOpen = false;  // Fermer la fenêtre
                     // printf("fermer");
-                    break;
-
-                case SDL_MOUSEBUTTONDOWN:
-                    // Vérifier si le bouton "OK" a été cliqué
-                    if (isMouseInsideButton(okButtonX, okButtonY, okButtonWidth, okButtonHeight)) {
-                        isVolumeOpen = false; // Fermer la fenêtre
-                    }
                     break;
 
                 default:
@@ -158,8 +148,24 @@ void Fenetre::openVolumeSettings() {
         SDL_SetRenderDrawColor(volumeRenderer, 0, 0, 0, 255); // Fond noir
         SDL_RenderClear(volumeRenderer);
 
-        // Afficher le bouton "OK"
-        drawButton(volumeRenderer, "SDL2 n'est pas assez performant pour gérer deux fenêtre xp", font, buttonTextColor, buttonNormalColor, buttonHoverColor);
+        // Dessiner le texte centré
+        SDL_Surface* textSurface = TTF_RenderText_Blended_Wrapped(font, message, textColor, 380); // Largeur max 380px
+        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(volumeRenderer, textSurface);
+
+        int textWidth = textSurface->w;
+        int textHeight = textSurface->h;
+
+        SDL_Rect textRect = {
+                (400 - textWidth) / 2, // Centré horizontalement
+                (200 - textHeight) / 2, // Centré verticalement
+                textWidth,
+                textHeight
+        };
+
+        SDL_RenderCopy(volumeRenderer, textTexture, nullptr, &textRect);
+        // Libérer les ressources temporaires
+        SDL_FreeSurface(textSurface);
+        SDL_DestroyTexture(textTexture);
 
         SDL_RenderPresent(volumeRenderer);
     }
@@ -181,9 +187,6 @@ int Fenetre::display(){
     // Initialisation
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
-
-    this->window = SDL_CreateWindow("Poisson", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->width, this->height, SDL_WINDOW_SHOWN);
-    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
     // Création d'un bouton
     TTF_Font* font = TTF_OpenFont("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 16); // Chargez une police (assurez-vous d'installer SDL_ttf)
@@ -217,6 +220,14 @@ int Fenetre::display(){
                     if (isMouseInsideButton(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT)) {
                         // Ouvrir la sous-fenêtre de gestion du volume
                         openVolumeSettings();
+                    }
+                    if (isMouseInsideButton(MUSIC_BUTTON_X, MUSIC_BUTTON_Y, MUSIC_BUTTON_SIZE, MUSIC_BUTTON_SIZE)) {
+                        isMusicOn = !isMusicOn;
+                        if (isMusicOn) {
+                            Mix_ResumeMusic();
+                        } else {
+                            Mix_PauseMusic();
+                        }
                     }
                     break;
                 default:
@@ -275,7 +286,13 @@ int Fenetre::display(){
         SDL_Color textColor = {255, 255, 255, 255};   // Blanc
 
         // Pendant le rendu
-        drawButton(renderer, "Parametre", font, textColor, normalColor, hoverColor);
+        drawButton(renderer, "Parametre", font, textColor, normalColor, hoverColor, BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        // Texte du bouton
+        const char* musicText = isMusicOn ? "ON" : "OFF";
+
+        // Dessiner le bouton carré
+        drawButton(renderer, musicText, font, textColor, normalColor, hoverColor, MUSIC_BUTTON_X, MUSIC_BUTTON_Y, MUSIC_BUTTON_SIZE, MUSIC_BUTTON_SIZE);
 
 
         // Afficher le rendu à l'écran

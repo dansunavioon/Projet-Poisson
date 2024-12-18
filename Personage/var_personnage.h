@@ -29,6 +29,12 @@ const int BUTTON_Y = 10;
 const int BUTTON_WIDTH = 100;
 const int BUTTON_HEIGHT = 40;
 
+// Position et dimensions du bouton Musique
+const int MUSIC_BUTTON_X = BUTTON_X + BUTTON_WIDTH + 10; // À côté du bouton Paramètre
+const int MUSIC_BUTTON_Y = BUTTON_Y;
+const int MUSIC_BUTTON_SIZE = 40; // Carré de 40x40
+
+
 // La structure d'événements
 extern SDL_Event event;
 
