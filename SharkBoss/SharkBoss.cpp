@@ -1,6 +1,8 @@
 #include "SharkBoss.h"
 #include <cmath>
 #include <iostream>
+#include <climits>
+
 
 SharkBoss::SharkBoss(SDL_Renderer* renderer, float x, float y): renderer(renderer), position{static_cast<int>(x), static_cast<int>(y)}, velocity{0, 0}, texture(nullptr), angle(0.0)
 {
