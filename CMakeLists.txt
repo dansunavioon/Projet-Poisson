@@ -4,6 +4,7 @@ project(Projet_Poisson)
 # Rechercher les bibliothèques SDL2 et SDL2_mixer
 find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
 # Définir la norme C++
 set(CMAKE_CXX_STANDARD 17)
@@ -24,4 +25,4 @@ add_executable(Projet_Poisson
 )
 
 # Lier SDL2 et SDL2_mixer à l'exécutable
-target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES} SDL2_mixer::SDL2_mixer)
+target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES} SDL2_mixer::SDL2_mixer SDL2_ttf::SDL2_ttf)
