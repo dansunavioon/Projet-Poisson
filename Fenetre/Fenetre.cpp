@@ -135,9 +135,11 @@ void Fenetre::openVolumeSettings() {
 
     while (isVolumeOpen) {
         while (SDL_PollEvent(&volumeEvent)) {
+            // printf("%d", volumeEvent);
             switch (volumeEvent.type) {
                 case SDL_QUIT:
                     isVolumeOpen = false;  // Fermer la fenêtre
+                    // printf("fermer");
                     break;
 
                 case SDL_MOUSEBUTTONDOWN:
@@ -157,11 +159,11 @@ void Fenetre::openVolumeSettings() {
         SDL_RenderClear(volumeRenderer);
 
         // Afficher le bouton "OK"
-        drawButton(volumeRenderer, "OK", font, buttonTextColor, buttonNormalColor, buttonHoverColor);
+        drawButton(volumeRenderer, "SDL2 n'est pas assez performant pour gérer deux fenêtre xp", font, buttonTextColor, buttonNormalColor, buttonHoverColor);
 
         SDL_RenderPresent(volumeRenderer);
     }
-
+    printf("net");
     // Nettoyer
     SDL_DestroyRenderer(volumeRenderer);
     SDL_DestroyWindow(volumeWindow);
