@@ -3,7 +3,7 @@ project(Projet_Poisson)
 
 # Rechercher les bibliothèques SDL2 et SDL2_mixer
 find_package(SDL2 REQUIRED)
-#find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
 # Définir la norme C++
 set(CMAKE_CXX_STANDARD 17)
@@ -11,23 +11,17 @@ set(CMAKE_CXX_STANDARD 17)
 # Ajouter les fichiers source
 add_executable(Projet_Poisson
         main.cpp
-        Camera/Camera.cpp
-        Camera/Camera.h
+        Poisson/Poisson.cpp
+        Poisson/Poisson.h
+        Fenetre/Fenetre.cpp
+        Fenetre/Fenetre.h
         Personage/Personnage.cpp
         Personage/Personnage.h
         Personage/var_personnage.h
         Personage/var_personnage.cpp
         Map/Map.cpp
         Map/Map.h
-        typeDef.h
-        Roche/Roche.cpp
-        Roche/Roche.h
-        Algue/Algue.cpp
-        Algue/Algue.h
 )
 
-# Inclure les fichiers d'en-tête SDL2
-target_include_directories(Projet_Poisson PRIVATE ${SDL2_INCLUDE_DIRS})
-
 # Lier SDL2 et SDL2_mixer à l'exécutable
-target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES}) #SDL2_mixer::SDL2_mixer
+target_link_libraries(Projet_Poisson ${SDL2_LIBRARIES} SDL2_mixer::SDL2_mixer)

@@ -1,0 +1,43 @@
+/*
+#ifndef POISSON_H
+#define POISSON_H
+
+#include <SDL.h>
+#include <vector>
+
+// Dimensions de la carte
+extern const int MAP_WIDTH;
+extern const int MAP_HEIGHT;
+
+// Dimensions de la caméra
+extern const int CAMERA_WIDTH;
+extern const int CAMERA_HEIGHT;
+
+
+class Poisson
+{
+public:
+    Poisson(SDL_Renderer* renderer, float x, float y, bool independent);
+    ~Poisson();
+
+    void update(const std::vector<Poisson>& poissons);
+    void draw(SDL_Renderer* renderer, const SDL_Point& cameraPosition) const;
+
+private:
+    void applyBehaviors(const std::vector<Poisson>& poissons);
+    SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
+    SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
+    float angle; // Angle actuel du poisson pour la rotation
+
+    SDL_Point position;
+    SDL_Point velocity;
+    SDL_Renderer* renderer;
+    SDL_Texture* texture;
+    bool independent;
+    int groupId;
+
+    static constexpr int MAX_GROUPS = 15;
+};
+
+#endif // POISSON_H
+ */

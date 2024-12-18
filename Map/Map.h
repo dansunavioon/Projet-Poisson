@@ -2,31 +2,16 @@
 #define MAP_H
 
 #include <SDL.h>
-#include "../TypeDef.h"
-#include <cstdlib>
-#include <vector>
-
-#include "../Algue/Algue.h"
-#include "../Roche/Roche.h"
-#include "../Personage/Personnage.h"
-#include "../Personage/var_personnage.h"
 
 class Map {
-
-    SDL_Window* window;
+private:
     SDL_Renderer* renderer;
-    int height;
-    int width;
+    int width, height;
 
-    void genererRoches();
-    void genererAlgues();
-    void genererFond();
-
-    public:
-        Map(SDL_Window* window, SDL_Renderer* renderer, int height, int width);
-        int generer();
+public:
+    Map(SDL_Renderer* renderer, int width, int height);
+    void render(const SDL_Rect& camera); // Affiche la portion visible de la carte selon la caméra
+    void update(); // Met à jour les éléments de la carte
 };
 
-
-
-#endif //MAP_H
+#endif // MAP_H
