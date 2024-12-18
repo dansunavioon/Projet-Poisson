@@ -358,7 +358,9 @@ CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o: /mnt/c/Users/Kylian/CLionPr
   /usr/include/c++/12/bits/basic_ios.tcc \
   /usr/include/c++/12/bits/ostream.tcc \
   /usr/include/c++/12/istream \
-  /usr/include/c++/12/bits/istream.tcc
+  /usr/include/c++/12/bits/istream.tcc \
+  /usr/include/SDL2/SDL_image.h \
+  /usr/include/SDL2/SDL.h
 
 CMakeFiles/Projet_Poisson.dir/SharkBoss/SharkBoss.cpp.o: /mnt/c/Users/Kylian/CLionProjects/Projet-Poisson/SharkBoss/SharkBoss.cpp \
   /usr/include/stdc-predef.h \
@@ -1769,6 +1771,8 @@ CMakeFiles/Projet_Poisson.dir/main.cpp.o: /mnt/c/Users/Kylian/CLionProjects/Proj
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
 /usr/include/SDL2/SDL_main.h:
+
+/usr/include/SDL2/SDL_image.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/12/include/stdarg.h:
 
