@@ -3,7 +3,7 @@ project(Projet_Poisson)
 
 # Rechercher les bibliothèques SDL2 et SDL2_mixer
 find_package(SDL2 REQUIRED)
-find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_mixer  REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
 # Définir la norme C++
