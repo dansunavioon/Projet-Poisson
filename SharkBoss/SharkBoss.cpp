@@ -1,35 +1,29 @@
 #include "SharkBoss.h"
 #include <cmath>
 #include <iostream>
-#include <climits>
 
-
-SharkBoss::SharkBoss(SDL_Renderer* renderer, float x, float y): renderer(renderer), position{static_cast<int>(x), static_cast<int>(y)}, velocity{0, 0}, texture(nullptr), angle(0.0)
+SharkBoss::SharkBoss(SDL_Renderer* renderer, float x, float y)
+    : renderer(renderer), position{static_cast<int>(x), static_cast<int>(y)}, velocity{0, 0}, texture(nullptr), angle(0.0)
 {
     // Chargement de la texture du requin
-    SDL_Surface* tempSurface = SDL_LoadBMP("Image_SharkBoss/SharkBoss.bmp");
-    if (tempSurface)
-    {
+    SDL_Surface* tempSurface = IMG_Load("Image_SharkBoss/SharkBoss.png");
+    if (tempSurface) {
         texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
         SDL_FreeSurface(tempSurface);
-        if (!texture)
-        {
+        if (!texture) {
             std::cerr << "Erreur de création de la texture SharkBoss : " << SDL_GetError() << std::endl;
         }
-    }
-    else
-    {
-        std::cerr << "Erreur de chargement de l'image SharkBoss.bmp : " << SDL_GetError() << std::endl;
+    } else {
+        std::cerr << "Erreur de chargement de l'image SharkBoss.png : " << IMG_GetError() << std::endl;
     }
 }
 
-SharkBoss::~SharkBoss()
-{
-    if (texture)
-    {
+SharkBoss::~SharkBoss() {
+    if (texture) {
         SDL_DestroyTexture(texture);
     }
 }
+
 
 void SharkBoss::update(const std::vector<Poisson>& poissons)
 {

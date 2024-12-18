@@ -17,6 +17,11 @@ bool Simulation::initialize() {
         return false;
     }
 
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        std::cerr << "Erreur d'initialisation de SDL_image : " << IMG_GetError() << std::endl;
+        return false;
+    }
+
     window = SDL_CreateWindow(
         "Simulation de poissons",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -39,7 +44,6 @@ bool Simulation::initialize() {
     initializePoissons();
     initializeSharkBoss();
 
-    // Initialiser le timer
     const int updateInterval = 16; // ~60 FPS
     timerID = SDL_AddTimer(updateInterval, updateCallback, this);
 
@@ -47,7 +51,7 @@ bool Simulation::initialize() {
 }
 
 void Simulation::initializePoissons() {
-    const int nombrePoissons = 100;
+    const int nombrePoissons = 5;
     for (int i = 0; i < nombrePoissons; ++i) {
         float randomX = static_cast<float>(rand() % MAP_WIDTH);
         float randomY = static_cast<float>(rand() % MAP_HEIGHT);

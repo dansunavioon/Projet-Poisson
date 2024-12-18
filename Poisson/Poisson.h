@@ -2,17 +2,16 @@
 #define POISSON_H
 
 #include <SDL.h>
+#include <SDL_image.h>
 #include <vector>
 
 // Constantes
-    static const int MAP_WIDTH = 3000;
+static const int MAP_WIDTH = 3000;
 static const int MAP_HEIGHT = 2000;
 static const int CAMERA_WIDTH = 800;
 static const int CAMERA_HEIGHT = 600;
 
-
-class Poisson
-{
+class Poisson {
 public:
     Poisson(SDL_Renderer* renderer, float x, float y, bool independent);
     ~Poisson();
@@ -32,7 +31,7 @@ private:
 
     SDL_Point cohesionBehavior(const std::vector<Poisson>& poissons);
     SDL_Point separationBehavior(const std::vector<Poisson>& poissons);
-    float angle; // Angle actuel du poisson pour la rotation
+    float angle;
 
     SDL_Point position;
     SDL_Point velocity;
@@ -46,4 +45,4 @@ private:
     static constexpr int MAX_GROUPS = 20;
 };
 
-#endif // POISSON_H
+#endif
