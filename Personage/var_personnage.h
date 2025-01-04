@@ -15,8 +15,8 @@ const int SHEET_WIDTH_BATON = 69;
 const int TAILLE_PLONGEUR = 198;
 
 extern SDL_Rect camera; // Map
-const int MAP_WIDTH = 3000;  // Largeur de la carte
-const int MAP_HEIGHT = 2000; // Hauteur de la carte
+const int MAP_WIDTH = 1742;  // Largeur de la carte
+const int MAP_HEIGHT = 980; // Hauteur de la carte
 
 const int JAUGE_WIDTH = 5;  // Largeur réduite de la jauge
 const int JAUGE_X = SCREEN_WIDTH - 20 - JAUGE_WIDTH;  // Position X de la jauge (à 20 pixels du bord droit)

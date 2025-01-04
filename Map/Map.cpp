@@ -1,19 +1,59 @@
 #include "Map.h"
-#include "../Personage/var_personnage.h"
+
+void Map::initPoissons(int nbPoissons) {
+    for (int i = 0; i < nbPoissons; i++) {
+        float x = rand() % width;
+        float y = rand() % height;
+        poissons.emplace_back(renderer, x, y, false);
+    }
+}
 
 Map::Map(SDL_Renderer* renderer, int width, int height)
-        : renderer(renderer), width(width), height(height) {}
+        : renderer(renderer), width(width), height(height), backgroundTexture(nullptr) {
 
-void Map::render(const SDL_Rect& camera) {
-    // Dessiner le fond avec un dégradé basé sur la position de la caméra
-    for (int y = camera.y; y < camera.y + camera.h; y++) {
-        int blueValue = 255 - (y * 255 / height); // Calcul du dégradé
-        SDL_SetRenderDrawColor(renderer, 0, 0, blueValue, 255);
-        SDL_RenderDrawLine(renderer, camera.x, y - camera.y, camera.x + camera.w, y - camera.y);
+    // Chargez une image pour l'arrière-plan de la carte
+    SDL_Surface* surface = IMG_Load("image_map/map.jpg");
+    if (!surface) {
+        SDL_Log("Erreur : Impossible de charger l'image : %s", IMG_GetError());
+        return;
     }
-    // Dessiner d'autres éléments (ex: poissons ou obstacles)
+    backgroundTexture = SDL_CreateTextureFromSurface(this->renderer, surface);
+    SDL_FreeSurface(surface);
+    if (!backgroundTexture) {
+        SDL_Log("Erreur : Impossible de créer la texture : %s", SDL_GetError());
+    }
+
+    initPoissons(100);
 }
 
-void Map::update() {
-    // Logique pour mettre à jour les éléments de la carte
+Map::~Map() {
+    // Libérez la texture lorsque vous détruisez la carte
+    if (backgroundTexture) {
+        SDL_DestroyTexture(backgroundTexture);
+    }
 }
+
+void Map::render(int cameraX, int cameraY) {
+    if (!backgroundTexture) return;
+
+    // Afficher l'arrière-plan de la carte
+    SDL_Rect destRect = {0, 0, width, height};
+    SDL_Rect srcRect = {cameraX, cameraY, width, height};
+    SDL_RenderCopy(renderer, backgroundTexture, &srcRect, &destRect);
+
+
+    for (Poisson& poisson : poissons)
+    {
+        poisson.update(poissons);
+        poisson.draw(renderer, cameraX, cameraY);
+    }
+}
+
+int Map::getWidth() const {
+    return width;
+}
+
+int Map::getHeight() const {
+    return height;
+}
+

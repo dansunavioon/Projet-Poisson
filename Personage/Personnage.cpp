@@ -110,7 +110,7 @@ void Personnage::update() {
 }
 
 // Afficher le personnage
-void Personnage::render() {
+void Personnage::render(int cameraX, int cameraY) {
     SDL_Rect* currentClip = nullptr;
     SDL_Texture* currentSprite = nullptr;
     int WIDTH_QUAD = 198;
@@ -143,12 +143,6 @@ void Personnage::render() {
             break;
     }
 
-    SDL_Rect renderQuad = {x - camera.x, y - camera.y, WIDTH_QUAD, HEIGHT_QUAD};
+    SDL_Rect renderQuad = { x - cameraX, y - cameraY, WIDTH_QUAD, HEIGHT_QUAD} ;
     SDL_RenderCopy(renderer, currentSprite, currentClip, &renderQuad);
-    /*
-    std::cout << "renderQuad: x=" << renderQuad.x << " y=" << renderQuad.y
-              << " w=" << renderQuad.w << " h=" << renderQuad.h << std::endl;
-    std::cout << "currentClip: x=" << currentClip->x << " y=" << currentClip->y
-              << " w=" << currentClip->w << " h=" << currentClip->h << std::endl;*/
-
 }

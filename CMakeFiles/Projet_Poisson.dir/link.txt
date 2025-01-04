@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/Projet_Poisson.dir/main.cpp.o CMakeFiles/Projet_Poisson.dir/Poisson/Poisson.cpp.o CMakeFiles/Projet_Poisson.dir/Fenetre/Fenetre.cpp.o CMakeFiles/Projet_Poisson.dir/Personage/Personnage.cpp.o CMakeFiles/Projet_Poisson.dir/Personage/var_personnage.cpp.o -o Projet_Poisson  /usr/lib/x86_64-linux-gnu/libSDL2.so /usr/lib/x86_64-linux-gnu/libSDL2_mixer.so 

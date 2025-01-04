@@ -2,16 +2,30 @@
 #define MAP_H
 
 #include <SDL.h>
+#include <SDL_image.h>
+#include "../Personage/Personnage.h"
+#include "../Poisson/Poisson.h"
+#include "../Personage/var_personnage.h"
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+
+
 
 class Map {
-private:
-    SDL_Renderer* renderer;
     int width, height;
+    SDL_Renderer* renderer;
+    SDL_Texture* backgroundTexture;
 
-public:
-    Map(SDL_Renderer* renderer, int width, int height);
-    void render(const SDL_Rect& camera); // Affiche la portion visible de la carte selon la caméra
-    void update(); // Met à jour les éléments de la carte
+    std::vector<Poisson> poissons;
+
+    public:
+        Map(SDL_Renderer* renderer, int width, int height);
+        ~Map();
+        void render(int cameraX, int cameraY); // Affiche la portion visible de la carte selon la caméra
+        void initPoissons(int nbPoissons);
+
+        int getWidth() const;
+        int getHeight() const;
 };
 
 #endif // MAP_H

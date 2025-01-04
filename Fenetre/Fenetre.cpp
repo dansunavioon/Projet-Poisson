@@ -1,35 +1,11 @@
 #include "Fenetre.h"
-#include "../Personage/Personnage.h"
-#include "../Poisson/Poisson.h"
-#include "../Personage/var_personnage.h"
-#include <SDL_mixer.h>
 
 
 Mix_Music* backgroundMusic = nullptr;
 
-/**
- * Constructeur
- * @param window
- * @param renderer
- * @param height
- * @param width
- */
 
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-// -------------- Constructeur
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-
-Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, int height, int width) : window(window), renderer(renderer), height(height), width(width) {
-
-    this->window = SDL_CreateWindow("Poisson", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->width, this->height, SDL_WINDOW_SHOWN);
-    this->renderer = SDL_CreateRenderer(this->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-    // Initialisation de la caméra
-    camera = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-
-    map = new Map(this->renderer, MAP_WIDTH, MAP_HEIGHT);
+Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, Map* map, int height, int width)
+: window(window), renderer(renderer), map(map), height(height), width(width), cameraX(0), cameraY(0) {
 
     // Initialisation du son
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
@@ -47,29 +23,119 @@ Fenetre::Fenetre(SDL_Window* window, SDL_Renderer* renderer, int height, int wid
     Mix_PlayMusic(backgroundMusic, -1);
 }
 
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-// -------------- Camera
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
 
-void Fenetre::updateCamera(const SDL_Rect& personnageRect) {
-    // Centrer la caméra sur le personnage
-    camera.x = personnageRect.x + (TAILLE_PLONGEUR / 2) - (SCREEN_WIDTH / 2);
-    camera.y = personnageRect.y + (TAILLE_PLONGEUR / 2) - (SCREEN_HEIGHT / 2);
+int Fenetre::display() {
 
-    // Empêcher la caméra de sortir des limites de la carte
-    if (camera.x < 0) camera.x = 0;
-    if (camera.y < 0) camera.y = 0;
-    if (camera.x > MAP_WIDTH - camera.w) camera.x = MAP_WIDTH - camera.w;
-    if (camera.y > MAP_HEIGHT - camera.h) camera.y = MAP_HEIGHT - camera.h;
+    // Initialisation
+    SDL_Init(SDL_INIT_EVERYTHING);
+    TTF_Init();
+
+    // Création d'un bouton
+    TTF_Font* font = TTF_OpenFont("DejaVuSans.ttf", 16); // Chargez une police
+    if (!font) {
+        SDL_Log("Erreur : Impossible de charger la police : %s", TTF_GetError());
+    }
+
+    Personnage plongeur(renderer);
+
+    SDL_Event events;
+    bool isOpen = true;
+
+    // Timer pour l'animation
+    Uint32 animationTimer = 0; // Temps d'animation
+    const Uint32 animationDelay = 100; // Délai en millisecondes pour la mise à jour de l'animation
+
+    while (isOpen) {
+        while (SDL_PollEvent(&events)) {
+            switch (events.type) {
+                case SDL_QUIT:
+                    isOpen = false;  // Quitter l'application
+                break;
+                case SDL_MOUSEBUTTONDOWN:
+                    int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+                if (isMouseInsideButton(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT)) {
+                    // Ouvrir la sous-fenêtre de gestion du volume
+                    openVolumeSettings();
+                }
+                if (isMouseInsideButton(MUSIC_BUTTON_X, MUSIC_BUTTON_Y, MUSIC_BUTTON_SIZE, MUSIC_BUTTON_SIZE)) {
+                    isMusicOn = !isMusicOn;
+                    if (isMusicOn) {
+                        Mix_ResumeMusic();
+                    } else {
+                        Mix_PauseMusic();
+                    }
+                }
+                break;
+                default:
+                    plongeur.handleInput(events);  // Gérer les entrées pour déplacer le personnage
+                break;
+            }
+        }
+
+        // Mettre à jour la caméra en fonction de la position du personnage
+        updateCamera(plongeur.getX(), plongeur.getY());
+
+        // Effacer l'écran
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        // Rendre la carte avec les coordonnées de la caméra
+        map->render(cameraX, cameraY);
+
+        // Rendre le personnage (avec position relative à la caméra)
+        plongeur.render(cameraX, cameraY);
+
+        // Rendre la jauge de profondeur
+        // Dessiner la jauge de profondeur sur le côté droit
+        SDL_SetRenderDrawColor(this->renderer, 200, 200, 200, 255); // Couleur de fond de la jauge (gris clair)
+        SDL_Rect gaugeBackground = { JAUGE_X, MARGE_Y, JAUGE_WIDTH, JAUGE_HEIGHT };
+        SDL_RenderFillRect(this->renderer, &gaugeBackground);
+
+        // Calcul de la position de l'indicateur en fonction de la profondeur (position Y du plongeur)
+        int indicatorY = MARGE_Y + (plongeur.getY() * JAUGE_HEIGHT / MAP_HEIGHT);
+        indicatorY = std::min(std::max(indicatorY, MARGE_Y), MARGE_Y + JAUGE_HEIGHT); // Clamp pour éviter les débordements
+
+        // Dessiner l'indicateur de profondeur
+        SDL_SetRenderDrawColor(this->renderer, 255, 0, 0, 255); // Couleur de l'indicateur (rouge)
+        SDL_Rect indicator = { JAUGE_X - 5, indicatorY - 5, JAUGE_WIDTH + 10, 10 }; // Indicateur élargi
+        SDL_RenderFillRect(this->renderer, &indicator);
+
+        // Temps actuel
+        Uint32 currentTime = SDL_GetTicks();
+
+        // Vérifie si le temps écoulé depuis la dernière mise à jour de l'animation est supérieur au délai
+        if (currentTime - animationTimer >= animationDelay) {
+            plongeur.update(); // Mettre à jour l'animation
+            animationTimer = currentTime; // Réinitialiser le timer
+        }
+
+        SDL_Color normalColor = {128, 128, 128, 255}; // Gris
+        SDL_Color hoverColor = {160, 160, 160, 255};  // Gris clair
+        SDL_Color textColor = {255, 255, 255, 255};   // Blanc
+
+        // Pendant le rendu
+        drawButton(renderer, "Parametre", font, textColor, normalColor, hoverColor, BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+
+        // Texte du bouton
+        const char* musicText = isMusicOn ? "ON" : "OFF";
+
+        // Dessiner le bouton carré
+        drawButton(renderer, musicText, font, textColor, normalColor, hoverColor, MUSIC_BUTTON_X, MUSIC_BUTTON_Y, MUSIC_BUTTON_SIZE, MUSIC_BUTTON_SIZE);
+
+        // Afficher à l'écran
+        SDL_RenderPresent(renderer);
+    }
+
+    // Quitter proprement
+    Mix_FreeMusic(backgroundMusic);
+    Mix_CloseAudio();
+    TTF_Quit();
+    SDL_DestroyRenderer(this->renderer);
+    SDL_DestroyWindow(this->window);
+    SDL_Quit();
+    return EXIT_SUCCESS;
 }
-
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-// -------------- Bouton Paramètre
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
 
 void Fenetre::drawButton(SDL_Renderer* renderer, const char* text, TTF_Font* font, SDL_Color textColor, SDL_Color normalColor, SDL_Color hoverColor, int x, int y, int width, int height) {
     // Vérifie si la souris est sur le bouton
@@ -119,7 +185,7 @@ void Fenetre::openVolumeSettings() {
     SDL_Window* volumeWindow = SDL_CreateWindow("Volume", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 200, SDL_WINDOW_SHOWN);
     SDL_Renderer* volumeRenderer = SDL_CreateRenderer(volumeWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    TTF_Font* font = TTF_OpenFont("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 16); // Chargez une police (assurez-vous d'installer SDL_ttf)
+    TTF_Font* font = TTF_OpenFont("DejaVuSans.ttf", 16); // Chargez une police
     if (!font) {
         SDL_Log("Erreur : Impossible de charger la police : %s", TTF_GetError());
     }
@@ -175,142 +241,12 @@ void Fenetre::openVolumeSettings() {
     SDL_DestroyWindow(volumeWindow);
 }
 
+void Fenetre::updateCamera(int personnageX, int personnageY) {
+    // Centrer la caméra sur le personnage
+    cameraX = personnageX - width / 2;
+    cameraY = personnageY - height / 2;
 
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-// -------------- Affichage
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-
-int Fenetre::display(){
-
-    // Initialisation
-    SDL_Init(SDL_INIT_EVERYTHING);
-    TTF_Init();
-
-    // Création d'un bouton
-    TTF_Font* font = TTF_OpenFont("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 16); // Chargez une police (assurez-vous d'installer SDL_ttf)
-    if (!font) {
-        SDL_Log("Erreur : Impossible de charger la police : %s", TTF_GetError());
-    }
-
-
-    // Créer un objet Personnage avec le renderer
-    Personnage plongeur(renderer);
-
-    SDL_Event events;
-
-    // Boucle infinie qui empeche la destruction de la fenetre tant que la fenetre n'est pas fermée
-    bool isOpen = true;
-
-    // Timer pour l'animation
-    Uint32 animationTimer = 0; // Temps d'animation
-    const Uint32 animationDelay = 100; // Délai en millisecondes pour la mise à jour de l'animation
-
-    while (isOpen) {
-        // Gérer les événements utilisateur
-        while (SDL_PollEvent(&events)) {
-            switch (events.type) {
-                case SDL_QUIT:
-                    isOpen = false;  // Quitter l'application
-                    break;
-                case SDL_MOUSEBUTTONDOWN:
-                    int mouseX, mouseY;
-                    SDL_GetMouseState(&mouseX, &mouseY);
-                    if (isMouseInsideButton(BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT)) {
-                        // Ouvrir la sous-fenêtre de gestion du volume
-                        openVolumeSettings();
-                    }
-                    if (isMouseInsideButton(MUSIC_BUTTON_X, MUSIC_BUTTON_Y, MUSIC_BUTTON_SIZE, MUSIC_BUTTON_SIZE)) {
-                        isMusicOn = !isMusicOn;
-                        if (isMusicOn) {
-                            Mix_ResumeMusic();
-                        } else {
-                            Mix_PauseMusic();
-                        }
-                    }
-                    break;
-                default:
-                    plongeur.handleInput(events);  // Gérer les entrées pour déplacer le personnage
-                    break;
-            }
-        }
-
-        // Temps actuel
-        Uint32 currentTime = SDL_GetTicks();
-
-        // Vérifie si le temps écoulé depuis la dernière mise à jour de l'animation est supérieur au délai
-        if (currentTime - animationTimer >= animationDelay) {
-            plongeur.update(); // Mettre à jour l'animation
-            animationTimer = currentTime; // Réinitialiser le timer
-        }
-
-        // Mettre à jour la caméra en fonction de la position du personnage
-        SDL_Rect personnageRect = {plongeur.getX(), plongeur.getY(), TAILLE_PLONGEUR, TAILLE_PLONGEUR};
-        updateCamera(personnageRect);
-
-        // Rafraîchir l'écran
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Noir par défaut pour effacer
-        SDL_RenderClear(renderer);
-
-        // Dessiner la carte
-        map->render(camera);
-
-        // Dessin du fond bleu avec un dégradé vertical en fonction de la caméra
-        for (int y = 0; y < camera.h; y++) {
-            int blueValue = 255 - ((camera.y + y) * 255 / MAP_HEIGHT); // Dégradé en fonction de la position sur la map
-            SDL_SetRenderDrawColor(renderer, 0, 0, blueValue, 255);
-            SDL_RenderDrawLine(renderer, 0, y, camera.w, y);
-        }
-
-        // Dessiner la jauge de profondeur sur le côté droit
-        SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255); // Couleur de fond de la jauge (gris clair)
-        SDL_Rect gaugeBackground = { JAUGE_X, MARGE_Y, JAUGE_WIDTH, JAUGE_HEIGHT };
-        SDL_RenderFillRect(renderer, &gaugeBackground);
-
-        // Calcul de la position de l'indicateur en fonction de la profondeur (position Y du plongeur)
-        int indicatorY = MARGE_Y + (plongeur.getY() * JAUGE_HEIGHT / MAP_HEIGHT);
-        indicatorY = std::min(std::max(indicatorY, MARGE_Y), MARGE_Y + JAUGE_HEIGHT); // Clamp pour éviter les débordements
-
-        // Dessiner l'indicateur de profondeur
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Couleur de l'indicateur (rouge)
-        SDL_Rect indicator = { JAUGE_X - 5, indicatorY - 5, JAUGE_WIDTH + 10, 10 }; // Indicateur élargi
-        SDL_RenderFillRect(renderer, &indicator);
-
-
-        // Rendre le personnage à sa nouvelle position
-        plongeur.render();
-
-        SDL_Color normalColor = {128, 128, 128, 255}; // Gris
-        SDL_Color hoverColor = {160, 160, 160, 255};  // Gris clair
-        SDL_Color textColor = {255, 255, 255, 255};   // Blanc
-
-        // Pendant le rendu
-        drawButton(renderer, "Parametre", font, textColor, normalColor, hoverColor, BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-
-        // Texte du bouton
-        const char* musicText = isMusicOn ? "ON" : "OFF";
-
-        // Dessiner le bouton carré
-        drawButton(renderer, musicText, font, textColor, normalColor, hoverColor, MUSIC_BUTTON_X, MUSIC_BUTTON_Y, MUSIC_BUTTON_SIZE, MUSIC_BUTTON_SIZE);
-
-
-        // Afficher le rendu à l'écran
-        SDL_RenderPresent(renderer);
-    }
-
-    // Quitter proprement
-    Mix_FreeMusic(backgroundMusic);
-    Mix_CloseAudio();
-    TTF_Quit();
-    delete map;
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
-
-    SDL_DestroyRenderer(this->renderer);
-    SDL_DestroyWindow(this->window);
-    SDL_Quit();
-    return EXIT_SUCCESS;
+    // Empêcher la caméra de dépasser les bords de la carte
+    cameraX = std::max(0, std::min(cameraX, map->getWidth() - width));
+    cameraY = std::max(0, std::min(cameraY, map->getHeight() - height));
 }

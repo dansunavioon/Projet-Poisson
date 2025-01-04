@@ -37,7 +37,7 @@ public:
     void update();
 
     // Afficher le personnage
-    void render();
+    void render(int cameraX, int cameraY);
 
     // Accéder à la position pour la caméra
     int getX() const { return x; }

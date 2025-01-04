@@ -1,9 +1,12 @@
-/*
 #ifndef POISSON_H
 #define POISSON_H
 
 #include <SDL.h>
 #include <vector>
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+
 
 // Dimensions de la carte
 extern const int MAP_WIDTH;
@@ -21,7 +24,7 @@ public:
     ~Poisson();
 
     void update(const std::vector<Poisson>& poissons);
-    void draw(SDL_Renderer* renderer, const SDL_Point& cameraPosition) const;
+    void draw(SDL_Renderer* renderer, int cameraX, int cameraY) const;
 
 private:
     void applyBehaviors(const std::vector<Poisson>& poissons);
@@ -40,4 +43,3 @@ private:
 };
 
 #endif // POISSON_H
- */
