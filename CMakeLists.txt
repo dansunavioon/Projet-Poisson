@@ -23,6 +23,8 @@ add_executable(Projet_Poisson
         Personage/var_personnage.cpp
         Map/Map.cpp
         Map/Map.h
+        Requin/Requin.cpp
+        Requin/Requin.h
 )
 
 # Lier SDL2 et SDL2_mixer à l'exécutable

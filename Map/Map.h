@@ -9,6 +9,7 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
+#include "../Requin/Requin.h"
 
 
 class Map {
@@ -17,6 +18,7 @@ class Map {
     SDL_Texture* backgroundTexture;
 
     std::vector<Poisson> poissons;
+    Requin* sharkBoss;
 
     public:
         Map(SDL_Renderer* renderer, int width, int height);

@@ -24,6 +24,7 @@ Map::Map(SDL_Renderer* renderer, int width, int height)
     }
 
     initPoissons(100);
+    sharkBoss = new Requin(renderer, 100, 100);
 }
 
 Map::~Map() {
@@ -44,8 +45,16 @@ void Map::render(int cameraX, int cameraY) {
 
     for (Poisson& poisson : poissons)
     {
+        poisson.respawnIfNeeded(MAP_WIDTH, MAP_HEIGHT);
         poisson.update(poissons);
         poisson.draw(renderer, cameraX, cameraY);
+    }
+
+    // Mettre à jour le requin (logique de chasse)
+    if (sharkBoss) {
+        sharkBoss->hunt(poissons);
+        sharkBoss->update(poissons);
+        sharkBoss->draw(renderer, cameraX, cameraY);
     }
 }
 
