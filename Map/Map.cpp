@@ -23,7 +23,7 @@ Map::Map(SDL_Renderer* renderer, int width, int height)
         SDL_Log("Erreur : Impossible de créer la texture : %s", SDL_GetError());
     }
 
-    initPoissons(10);
+    initPoissons(20);
     sharkBoss = new Requin(renderer, 100, 100);
 }
 

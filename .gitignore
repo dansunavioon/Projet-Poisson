@@ -1,3 +1,5 @@
 CMakeLists.txt
 cmake-build-*
 .idea
+!cmake-build-*/image_*
+!cmake-build-*/DejaVuSans.tff
