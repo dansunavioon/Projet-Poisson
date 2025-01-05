@@ -11,7 +11,7 @@ Poisson::Poisson(SDL_Renderer* renderer, float x, float y, bool independent)
     velocity.x = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
     velocity.y = (rand() % 3 + 1) * (rand() % 2 == 0 ? 1 : -1);
 
-    SDL_Surface* tempSurface = IMG_Load("Image_Poisson/poisson.bmp");
+    SDL_Surface* tempSurface = IMG_Load("image_Poisson/poisson.png");
     if (tempSurface) {
         texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
         SDL_FreeSurface(tempSurface);
